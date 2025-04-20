@@ -3,6 +3,7 @@
 #include "Game.h"
 
 #include <SDL3/SDL_render.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 void Node::Draw(SDL_Renderer* renderer) {
 	if (gGame.debug) {

@@ -4,21 +4,14 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_render.h>
 
-#include "nodes/node.h"
-#include "nodes/spaceship.h"
+#include "Nodes/Node.h"
+#include "Nodes/Spaceship.h"
 
 void Game::Run() {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	window = SDL_CreateWindow("Space", 640, 480, SDL_WINDOW_OPENGL);
-	if (window == NULL) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
-		return;
-	}
-
-	renderer = SDL_CreateRenderer(window, NULL);
-	if (renderer == NULL) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create renderer: %s\n", SDL_GetError());
+	if (!SDL_CreateWindowAndRenderer("Space", 640, 480, 0, &window, &renderer)) {
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window and renderer: %s\n", SDL_GetError());
 		return;
 	}
 

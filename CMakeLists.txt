@@ -12,7 +12,18 @@ endif()
 project ("Space")
 
 # Add source to this project's executable.
-add_executable (Space "Space.cpp" "Space.h")
+add_executable (Space "Main.cpp"  "Game.cpp" "Game.h" "Nodes/node.h" "Nodes/Node.cpp" "Nodes/Spaceship.h" "Nodes/Spaceship.cpp" "Components/VectorRenderer.h" "Components/VectorRenderer.cpp" "Components/Component.h" "KeyboardInputManager.cpp" "KeyboardInputManager.h" "DataTypes.h" "DataTypes.cpp")
+
+target_include_directories (Space PRIVATE ".")
+
+# Add SDL
+add_subdirectory(external/SDL)
+
+# Link SDL2
+target_link_libraries(Space PRIVATE SDL3::SDL3)
+
+# Include SDL
+target_include_directories(Space PRIVATE external/SDL/include)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Space PROPERTY CXX_STANDARD 20)

@@ -1,0 +1,82 @@
+#include "Game.h"
+
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_video.h>
+#include <SDL3/SDL_render.h>
+
+#include "nodes/node.h"
+#include "nodes/spaceship.h"
+
+void Game::Run() {
+	SDL_Init(SDL_INIT_VIDEO);
+
+	window = SDL_CreateWindow("Space", 640, 480, SDL_WINDOW_OPENGL);
+	if (window == NULL) {
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
+		return;
+	}
+
+	renderer = SDL_CreateRenderer(window, NULL);
+	if (renderer == NULL) {
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create renderer: %s\n", SDL_GetError());
+		return;
+	}
+
+	SDL_SetRenderVSync(renderer, 1);
+
+	SetupScene();
+
+	while (!shouldExit) {
+		PollEvents();
+		UpdateScene();
+		RenderFrame();
+	}
+
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+	SDL_Quit();
+}
+
+void Game::SetupScene() {
+	sceneRoot = new Node();
+
+	sceneRoot->children.push_back(new Spaceship());
+}
+
+void Game::PollEvents() {
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_EVENT_QUIT) {
+			shouldExit = true;
+		}
+
+		inputManager.ProcessEvent(event);
+	}
+}
+
+void Game::UpdateScene() {
+	float time = SDL_GetPerformanceCounter();
+
+	if (!lastUpdateTime.has_value()) {
+		lastUpdateTime = time;
+	}
+
+	float delta = (time - lastUpdateTime.value()) / SDL_GetPerformanceFrequency();
+
+	lastUpdateTime = time;
+
+	sceneRoot->Update(delta);
+}
+
+void Game::RenderFrame() {
+	// Clear Screen
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	sceneRoot->Draw(renderer);
+
+	// Present
+	SDL_RenderPresent(renderer);
+}

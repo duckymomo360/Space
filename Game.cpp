@@ -32,7 +32,7 @@ void Game::Run() {
 }
 
 void Game::SetupScene() {
-	sceneRoot = new Node();
+	sceneRoot = new Node("Root");
 
 	sceneRoot->children.push_back(new Spaceship());
 }
@@ -50,6 +50,8 @@ void Game::PollEvents() {
 }
 
 void Game::UpdateScene() {
+	sceneRoot->UpdateTransformRecursive();
+
 	float time = SDL_GetPerformanceCounter();
 
 	if (!lastUpdateTime.has_value()) {

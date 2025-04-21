@@ -1,6 +1,7 @@
 #pragma once
 
 #include "KeyboardInputManager.h"
+#include "TextRenderer.h"
 
 #include <vector>
 #include <optional>
@@ -16,6 +17,7 @@ public:
 	Node* sceneRoot = nullptr;
 
 	KeyboardInputManager inputManager;
+	TextRenderer textRenderer;
 
 	bool shouldExit = false;
 	bool debug = true;

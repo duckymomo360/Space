@@ -6,7 +6,13 @@
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <Components/ParticleEmitter.h>
+
 Spaceship::Spaceship() {
+	strcpy(name, "Spaceship");
+
 	position.x = 300.0f;
 	position.y = 300.0f;
 
@@ -20,8 +26,12 @@ Spaceship::Spaceship() {
 		{ 1.0f,  1.0f},
 	};
 
-	particlePoint = new Node();
-	particlePoint->position = Vector2(0.0f, 5.0f);
+	particlePoint = new Node("Emitter");
+	particlePoint->position = Vector2(0.0f, 15.0f);
+	
+	emitter = particlePoint->GetComponent<ParticleEmitterComponent>();
+
+	AddChild(particlePoint);
 }
 
 void Spaceship::Update(float dt) {
@@ -36,6 +46,15 @@ void Spaceship::Update(float dt) {
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {
-
+		velocity += Vector2(
+			std::cos(rotation - M_PI / 2.f),
+			std::sin(rotation - M_PI / 2.f)
+		) * 2.0f;
 	}
+
+	velocity -= Vector2::Down * 1.0f;
+
+	position += velocity * dt;
+
+	emitter->Emit();
 }

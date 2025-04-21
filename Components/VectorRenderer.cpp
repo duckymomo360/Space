@@ -13,8 +13,8 @@ void VectorRendererComponent::Draw(SDL_Renderer* renderer) {
 
 	for (Vector2 point : points) {
 		Vector2 local = point * scale;
-		Vector2 rotated = local.RotateAround(Vector2::Zero, node->rotation);
-		Vector2 world = rotated + node->position;
+		Vector2 rotated = local.RotateAround(Vector2::Zero, node->globalRotation);
+		Vector2 world = rotated + node->globalPosition;
 
 		if (last.has_value()) {
 			SDL_RenderLine(renderer, last->x, last->y, world.x, world.y);

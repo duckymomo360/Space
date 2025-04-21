@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 # Add source to this project's executable.
-add_executable(Space "Main.cpp"  "Game.cpp" "Game.h" "Nodes/node.h" "Nodes/Node.cpp" "Nodes/Spaceship.h" "Nodes/Spaceship.cpp" "Components/VectorRenderer.h" "Components/VectorRenderer.cpp" "Components/Component.h" "KeyboardInputManager.cpp" "KeyboardInputManager.h" "DataTypes.h" "DataTypes.cpp")
+add_executable(Space "Main.cpp"  "Game.cpp" "Game.h" "Nodes/node.h" "Nodes/Node.cpp" "Nodes/Spaceship.h" "Nodes/Spaceship.cpp" "Components/VectorRenderer.h" "Components/VectorRenderer.cpp" "Components/Component.h" "KeyboardInputManager.cpp" "KeyboardInputManager.h" "DataTypes.h" "DataTypes.cpp" "TextRenderer.h" "TextRenderer.cpp" "Components/ParticleEmitter.h" "Components/ParticleEmitter.cpp")
 
 # Include base source
 target_include_directories(Space PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

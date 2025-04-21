@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <SDL3/SDL_render.h>
 
 struct Vector2 {
 	float x, y;
@@ -8,6 +9,18 @@ struct Vector2 {
 
 	Vector2(float x, float y) : x(x), y(y) {};
 	
+	Vector2& operator+=(const Vector2& other) {
+		x += other.x;
+		y += other.y;
+		return *this;
+	}
+
+	Vector2& operator-=(const Vector2& other) {
+		x -= other.x;
+		y -= other.y;
+		return *this;
+	}
+
 	Vector2 operator+(const Vector2& other) const {
 		return Vector2(x + other.x, y + other.y);
 	}
@@ -45,4 +58,28 @@ struct Vector2 {
     static const Vector2 Down;
     static const Vector2 Left;
     static const Vector2 Right;
+};
+
+struct Color3 {
+	Uint8 r, g, b;
+
+	SDL_Color SDL_Color() {
+		return { r, g, b, 255 };
+	}
+
+	void SetRenderDrawColor(SDL_Renderer* renderer) {
+		SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+	}
+};
+
+struct Color4 {
+	Uint8 r, g, b, a;
+
+	struct SDL_Color SDL_Color() {
+		return { r, g, b, a };
+	}
+
+	void SetRenderDrawColor(SDL_Renderer* renderer) {
+		SDL_SetRenderDrawColor(renderer, r, g, b, a);
+	}
 };

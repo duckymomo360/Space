@@ -1,6 +1,9 @@
 #pragma once
+
 #include <cmath>
 #include <SDL3/SDL_render.h>
+
+#define M_PI 3.14159265358979323846
 
 struct Vector2 {
 	float x, y;

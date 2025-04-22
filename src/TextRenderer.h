@@ -4,6 +4,7 @@ struct SDL_Renderer;
 struct TTF_Font;
 struct SDL_Color;
 struct Vector2;
+struct Color3;
 
 enum DefaultFont : char {
 	FONT_DEBUG = 0,
@@ -15,5 +16,5 @@ class TextRenderer {
 public:
 	TextRenderer();
 
-	void DrawText(SDL_Renderer* renderer, DefaultFont font, const char* text, Vector2 position, float scale, SDL_Color color);
+	void DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* text);
 };

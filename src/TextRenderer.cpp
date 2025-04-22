@@ -9,12 +9,12 @@ const std::map<DefaultFont, const char*> fontFiles = {
 
 TextRenderer::TextRenderer() {
     if (!TTF_Init()) {
-        SDL_Log("Couldn't initialise SDL_ttf: %s\n", SDL_GetError());
+        SDL_Log("Couldn't initialize SDL_ttf: %s\n", SDL_GetError());
         return;
     }
 }
 
-void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, const char* text, Vector2 position, float scale, SDL_Color color) {
+void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* text) {
     if (!fontCache.contains(font)) {
         const char* file = fontFiles.at(font);
 
@@ -30,7 +30,7 @@ void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, const char
     SDL_Surface* surface = nullptr;
     SDL_Texture* texture = nullptr;
 
-    surface = TTF_RenderText_Blended(fontCache[font], text, 0, color);
+    surface = TTF_RenderText_Blended(fontCache[font], text, 0, color.SDL_Color());
     if (surface) {
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_DestroySurface(surface);

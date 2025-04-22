@@ -72,6 +72,10 @@ void Game::RenderFrame() {
 
 	sceneRoot->Draw(renderer);
 
+	if (debug) {
+		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 2.0f, {255, 255, 255, 255}, "FPS");
+	}
+
 	// Present
 	SDL_RenderPresent(renderer);
 }

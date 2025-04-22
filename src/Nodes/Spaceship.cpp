@@ -1,14 +1,11 @@
 #include "Spaceship.h"
 
-#include "Components/VectorRenderer.h"
 #include "Game.h"
+#include "Components/VectorRenderer.h"
+#include "Components/ParticleEmitter.h"
 
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>
-
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <Components/ParticleEmitter.h>
 
 Spaceship::Spaceship() {
 	strcpy(name, "Spaceship");
@@ -46,13 +43,8 @@ void Spaceship::Update(float dt) {
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {
-		velocity += Vector2(
-			std::cos(rotation - M_PI / 2.f),
-			std::sin(rotation - M_PI / 2.f)
-		) * 2.0f;
+		velocity += Vector2::FromAngle(rotation) * 2.0f;
 	}
-
-	velocity -= Vector2::Down * 1.0f;
 
 	position += velocity * dt;
 

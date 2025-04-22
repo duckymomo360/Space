@@ -20,6 +20,10 @@ void Game::Run() {
 	SetupScene();
 
 	while (!shouldExit) {
+		frameTime = frameTimer.Elapsed();
+		fpsAverager.Push(1.0 / frameTime);
+		frameTimer.Reset();
+
 		PollEvents();
 		UpdateScene();
 		RenderFrame();
@@ -52,30 +56,10 @@ void Game::PollEvents() {
 void Game::UpdateScene() {
 	sceneRoot->UpdateTransformRecursive();
 
-	float time = SDL_GetPerformanceCounter();
-
-	if (!lastUpdateTime.has_value()) {
-		lastUpdateTime = time;
-	}
-
-	float delta = (time - lastUpdateTime.value()) / SDL_GetPerformanceFrequency();
-
-	lastUpdateTime = time;
-
-	sceneRoot->Update(delta);
+	sceneRoot->Update(frameTime);
 }
 
 void Game::RenderFrame() {
-	float time = SDL_GetPerformanceCounter();
-
-	if (!lastFrameTime.has_value()) {
-		lastFrameTime = time;
-	}
-
-	float delta = (time - lastFrameTime.value()) / SDL_GetPerformanceFrequency();
-
-	lastFrameTime = time;
-
 	// Clear Screen
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -83,7 +67,7 @@ void Game::RenderFrame() {
 	sceneRoot->Draw(renderer);
 
 	if (debug) {
-		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.1f", delta * 60.0f);
+		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.f", fpsAverager.Average());
 	}
 
 	// Present

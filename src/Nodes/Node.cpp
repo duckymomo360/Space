@@ -32,6 +32,10 @@ void Node::DrawDebugInfo(SDL_Renderer* renderer) {
 }
 
 void Node::Update(float dt) {
+	for (auto& component : components) {
+		component->Update(dt);
+	}
+
 	for (auto& child : children) {
 		child->Update(dt);
 	}

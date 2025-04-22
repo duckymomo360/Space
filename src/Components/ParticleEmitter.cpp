@@ -11,19 +11,20 @@ void ParticleEmitterComponent::Update(float dt) {
 }
 
 void ParticleEmitterComponent::Draw(SDL_Renderer* renderer) {
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
 	for (auto& particle : particles) {
+		particle.color.SetRenderDrawColor(renderer);
+
 		SDL_RenderPoint(renderer,
-			node->globalPosition.x + particle.position.x,
-			node->globalPosition.y + particle.position.y);
+			particle.position.x,
+			particle.position.y);
 	}
 }
 
 void ParticleEmitterComponent::Emit() {
 	Particle particle;
-	particle.position = Vector2::Zero;
-	particle.velocity = Vector2::One * 1.0f;
+	particle.position = node->globalPosition;
+	particle.velocity = Vector2::FromAngle(node->globalRotation + ((float)std::rand() / (float)RAND_MAX)) * 50.0f;
+	particle.color = Color3(255, 165, 0);
 
 	particles.push_back(particle);
 }

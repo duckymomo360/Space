@@ -11,6 +11,7 @@ class ParticleEmitterComponent : public Component {
 	struct Particle {
 		Vector2 position;
 		Vector2 velocity;
+		Color3 color;
 	};
 
 	std::vector<Particle> particles;

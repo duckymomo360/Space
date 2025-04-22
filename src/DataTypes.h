@@ -50,7 +50,7 @@ struct Vector2 {
 	}
 
 	static Vector2 FromAngle(float angle) {
-		float qx = std::sin(angle);
+		float qx = -std::sin(angle);
 		float qy = std::cos(angle);
 		return Vector2(qx, qy);
 	}

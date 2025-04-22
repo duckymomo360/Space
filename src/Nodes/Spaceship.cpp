@@ -43,10 +43,10 @@ void Spaceship::Update(float dt) {
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {
-		velocity += Vector2::FromAngle(rotation) * 2.0f;
+		velocity += Vector2::FromAngle(rotation + M_PI) * 2.0f;
+
+		emitter->Emit();
 	}
 
 	position += velocity * dt;
-
-	emitter->Emit();
 }

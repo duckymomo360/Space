@@ -21,7 +21,7 @@ void Game::Run() {
 
 	while (!shouldExit) {
 		frameTime = frameTimer.Elapsed();
-		fpsAverager.Push(1.0 / frameTime);
+		fpsSampler.Push(1.0 / frameTime);
 		frameTimer.Reset();
 
 		PollEvents();
@@ -67,7 +67,7 @@ void Game::RenderFrame() {
 	sceneRoot->Draw(renderer);
 
 	if (debug) {
-		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.f", fpsAverager.Average());
+		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.f", fpsSampler.Average());
 	}
 
 	// Present

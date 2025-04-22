@@ -3,37 +3,73 @@
 #include <SDL3/SDL_timer.h>
 
 #include <cstdint>
-#include <deque>
+#include <concepts>
+#include <optional>
 
-struct Timer {
+class Timer {
 	uint64_t last = 0;
 
+public:
 	double Elapsed();
+	void   Reset();
 
-	void Reset();
-
-	static inline uint64_t GetPerformanceCounter() {
+	inline uint64_t GetPerformanceCounter() {
 		return SDL_GetPerformanceCounter();
 	}
 
-	static inline uint64_t GetPerformanceFrequency() {
+	inline uint64_t GetPerformanceFrequency() {
 		return SDL_GetPerformanceFrequency();
 	}
 };
 
-struct Averager {
-	std::deque<double> samples;
+template<typename T>
+concept arithmetic = std::integral<T> or std::floating_point<T>;
 
-	Averager() : samples(10) {}
+template<arithmetic T, size_t size>
+class Sampler {
+	T samples[size];
+	size_t index;
 
-	inline void Resize(size_t size) {
-		samples.resize(size, 0);
+public:
+	void Push(T n) {
+		samples[index] = n;
+
+		if (++index >= size) {
+			index = 0;
+		}
 	}
 
-	inline void Push(double n) {
-		samples.pop_back();
-		samples.push_front(n);
+	std::optional<T> Max() const {
+		std::optional<T> max;
+
+		for (size_t i = 0; i < size; i++) {
+			if (!max.has_value() || samples[i] > max.value()) {
+				max = samples[i];
+			}
+		}
+
+		return max;
 	}
 
-	double Average();
+	std::optional<T> Min() const {
+		std::optional<T> min;
+
+		for (size_t i = 0; i < size; i++) {
+			if (!min.has_value() || samples[i] < min.value()) {
+				min = samples[i];
+			}
+		}
+
+		return min;
+	}
+
+	T Average() const {
+		T total = 0;
+
+		for (size_t i = 0; i < size; i++) {
+			total += samples[i];
+		}
+
+		return total / (T)size;
+	}
 };

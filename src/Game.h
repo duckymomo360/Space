@@ -26,7 +26,7 @@ public:
 
 	float frameTime;
 	Timer frameTimer;
-	Averager fpsAverager;
+	Sampler<float, 32> fpsSampler;
 
 public:
 	void Run();

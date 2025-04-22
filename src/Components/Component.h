@@ -3,13 +3,18 @@
 class Node;
 struct SDL_Renderer;
 
+#define COMPONENT_CONSTRUCTOR(ClassName) \
+	ClassName(Node* node) : Component::Component(#ClassName, node) {}
+
 class Component {
 protected:
 	Node* node;
 
-public:
-	Component(Node* node) : node(node) {};
+	Component(const char* className, Node* node) : className(className), node(node) {}
 
-	virtual void Update(float dt) {};
-	virtual void Draw(SDL_Renderer* renderer) {};
+public:
+	const char* className;
+
+	virtual void Update(float dt) {}
+	virtual void Draw(SDL_Renderer* renderer) {}
 };

@@ -6,12 +6,12 @@
 #include <utility>
 
 class VectorRendererComponent : public Component {
-	using Component::Component;
-
 public:
+	COMPONENT_CONSTRUCTOR(VectorRendererComponent);
+
 	float scale = 1.0f;
 
 	std::vector<Vector2> points;
 
-	virtual void Draw(SDL_Renderer* renderer) override;
+	void Draw(SDL_Renderer* renderer) override;
 };

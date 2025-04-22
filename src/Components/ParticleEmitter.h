@@ -6,8 +6,6 @@
 #include <utility>
 
 class ParticleEmitterComponent : public Component {
-	using Component::Component;
-
 	struct Particle {
 		Vector2 position;
 		Vector2 velocity;
@@ -17,9 +15,11 @@ class ParticleEmitterComponent : public Component {
 	std::vector<Particle> particles;
 
 public:
-	virtual void Update(float dt) override;
+	COMPONENT_CONSTRUCTOR(ParticleEmitterComponent);
 
-	virtual void Draw(SDL_Renderer* renderer) override;
+	void Update(float dt) override;
+
+	void Draw(SDL_Renderer* renderer) override;
 
 	void Emit(uint32_t count);
 

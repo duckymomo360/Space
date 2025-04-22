@@ -16,5 +16,5 @@ class TextRenderer {
 public:
 	TextRenderer();
 
-	void DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* text);
+	void DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* fmt, ...);
 };

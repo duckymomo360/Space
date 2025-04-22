@@ -28,7 +28,7 @@ void Node::Draw(SDL_Renderer* renderer) {
 void Node::DrawDebugInfo(SDL_Renderer* renderer) {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderPoint(renderer, globalPosition.x, globalPosition.y);
-	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, name, globalPosition + Vector2(2.0f, 2.0f), 1.0f, {255, 0, 0, SDL_ALPHA_OPAQUE});
+	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, globalPosition + Vector2(2.0f, 2.0f), 1.0f, {255, 0, 0}, name);
 }
 
 void Node::Update(float dt) {

@@ -66,6 +66,16 @@ void Game::UpdateScene() {
 }
 
 void Game::RenderFrame() {
+	float time = SDL_GetPerformanceCounter();
+
+	if (!lastFrameTime.has_value()) {
+		lastFrameTime = time;
+	}
+
+	float delta = (time - lastFrameTime.value()) / SDL_GetPerformanceFrequency();
+
+	lastFrameTime = time;
+
 	// Clear Screen
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -73,7 +83,7 @@ void Game::RenderFrame() {
 	sceneRoot->Draw(renderer);
 
 	if (debug) {
-		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 2.0f, {255, 255, 255, 255}, "FPS");
+		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.1f", delta * 60.0f);
 	}
 
 	// Present

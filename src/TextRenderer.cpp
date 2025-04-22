@@ -4,7 +4,7 @@
 #include <DataTypes.h>
 
 const std::map<DefaultFont, const char*> fontFiles = {
-    {FONT_DEBUG, "C:\\WINDOWS\\FONTS\\ARIAL.TTF"}
+    {FONT_DEBUG, "data/FONT/Roboto-Regular.ttf"}
 };
 
 TextRenderer::TextRenderer() {
@@ -14,11 +14,10 @@ TextRenderer::TextRenderer() {
     }
 }
 
-void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* text) {
+void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* fmt, ...) {
     if (!fontCache.contains(font)) {
-        const char* file = fontFiles.at(font);
-
-        TTF_Font* ttfFont = TTF_OpenFont(file, 8);
+        const char* name = fontFiles.at(font);
+        TTF_Font* ttfFont = TTF_OpenFont(name, 8.0f);
         if (!ttfFont) {
             SDL_Log("Couldn't open font: %s\n", SDL_GetError());
             return;
@@ -27,10 +26,14 @@ void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 po
         fontCache[font] = ttfFont;
     }
 
-    SDL_Surface* surface = nullptr;
-    SDL_Texture* texture = nullptr;
+	char buffer[256];
+	va_list args;
+	va_start(args, fmt);
+    vsnprintf_s(buffer, sizeof(buffer), fmt, args);
+	va_end(args);
 
-    surface = TTF_RenderText_Blended(fontCache[font], text, 0, color.SDL_Color());
+    SDL_Texture* texture = nullptr;
+    SDL_Surface* surface = TTF_RenderText_Blended(fontCache[font], buffer, 0, color.SDL_Color());
     if (surface) {
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_DestroySurface(surface);

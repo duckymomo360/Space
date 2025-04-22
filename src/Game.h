@@ -23,6 +23,7 @@ public:
 	bool debug = true;
 
 	std::optional<float> lastUpdateTime;
+	std::optional<float> lastFrameTime;
 
 public:
 	void Run();

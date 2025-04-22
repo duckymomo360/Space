@@ -1,5 +1,5 @@
 #pragma once
-#include <stdint.h>
+#include <cstdint>
 
 union SDL_Event;
 enum SDL_Scancode;

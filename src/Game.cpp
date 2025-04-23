@@ -38,7 +38,7 @@ void Game::Run() {
 void Game::SetupScene() {
 	sceneRoot = new Node("Root");
 
-	sceneRoot->children.push_back(new Spaceship());
+	sceneRoot->AddChild(new Spaceship());
 }
 
 void Game::PollEvents() {

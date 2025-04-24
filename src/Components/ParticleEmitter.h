@@ -21,7 +21,9 @@ public:
 
 	void Draw(SDL_Renderer* renderer) override;
 
-	void Emit(uint32_t count);
+	void Emit(Vector2 velocity);
 
 	void Emit();
+
+	void Emit(uint32_t count);
 };

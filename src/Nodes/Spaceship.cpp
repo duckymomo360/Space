@@ -35,11 +35,11 @@ void Spaceship::Update(float dt) {
 	Node::Update(dt);
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_A)) {
-		rotation -= dt * 3.0f;
+		rotation -= dt * 4.0f;
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_D)) {
-		rotation += dt * 3.0f;
+		rotation += dt * 4.0f;
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {

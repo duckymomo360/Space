@@ -15,7 +15,7 @@ void Game::Run() {
 		return;
 	}
 
-	SDL_SetRenderVSync(renderer, 1);
+	//SDL_SetRenderVSync(renderer, 1);
 
 	SetupScene();
 
@@ -45,8 +45,18 @@ void Game::PollEvents() {
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_EVENT_QUIT) {
+		switch (event.type) {
+
+		case SDL_EVENT_QUIT:
 			shouldExit = true;
+			break;
+
+		case SDL_EVENT_KEY_DOWN:
+			if (event.key.scancode == SDL_SCANCODE_F3) {
+				debug = !debug;
+			}
+			break;
+
 		}
 
 		inputManager.ProcessEvent(event);
@@ -66,9 +76,7 @@ void Game::RenderFrame() {
 
 	sceneRoot->Draw(renderer);
 
-	if (debug) {
-		textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 4.0f, {255, 255, 255}, "FPS %.f", fpsSampler.Average());
-	}
+	textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 2.0f, {255, 255, 255}, "FPS %.f", fpsSampler.Average());
 
 	// Present
 	SDL_RenderPresent(renderer);

@@ -22,11 +22,16 @@ public:
 	TextRenderer textRenderer;
 
 	bool shouldExit = false;
+
+#ifdef _DEBUG
 	bool debug = true;
+#else
+	bool debug = false;
+#endif
 
 	float frameTime;
 	Timer frameTimer;
-	Sampler<float, 32> fpsSampler;
+	Sampler<float, 16> fpsSampler;
 
 public:
 	void Run();

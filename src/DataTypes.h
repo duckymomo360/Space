@@ -64,7 +64,11 @@ struct Vector2 {
 };
 
 struct Color3 {
-	Uint8 r, g, b;
+	uint8_t r{}, g{}, b{};
+
+	Color3() : r(0), g(0), b(0) {};
+
+	Color3(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {};
 
 	SDL_Color SDL_Color() {
 		return { r, g, b, 255 };

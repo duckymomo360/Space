@@ -27,6 +27,7 @@ Spaceship::Spaceship() {
 	particlePoint->position = Vector2(0.0f, 15.0f);
 	
 	emitter = particlePoint->GetComponent<ParticleEmitterComponent>();
+	emitter->spread = M_PI * 0.3f;
 
 	AddChild(particlePoint);
 }
@@ -43,7 +44,7 @@ void Spaceship::Update(float dt) {
 	}
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {
-		velocity += Vector2::FromAngle(rotation + M_PI) * 2.0f;
+		velocity += Vector2::FromAngle(rotation + M_PI) * dt * 200.0f;
 
 		emitter->Emit();
 	}

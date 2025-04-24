@@ -17,6 +17,10 @@ class ParticleEmitterComponent : public Component {
 public:
 	COMPONENT_CONSTRUCTOR(ParticleEmitterComponent);
 
+	float spread = 0.0f;
+
+	float speed = 50.0f;
+
 	void Update(float dt) override;
 
 	void Draw(SDL_Renderer* renderer) override;

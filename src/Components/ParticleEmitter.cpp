@@ -22,14 +22,15 @@ void ParticleEmitterComponent::Draw(SDL_Renderer* renderer) {
 	}
 }
 
+std::random_device rd;
+std::mt19937 gen(rd());
+
 void ParticleEmitterComponent::Emit(Vector2 velocity) {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> dist(-0.3f, 0.3f);
+	std::uniform_real_distribution<> dist(-spread, spread);
 
 	Particle particle;
 	particle.position = node->globalPosition;
-	particle.velocity = Vector2::FromAngle(node->globalRotation + dist(gen) * M_PI) * 50.0f;
+	particle.velocity = Vector2::FromAngle(node->globalRotation + dist(gen)) * speed;
 	particle.color = Color3(255, 165, 0);
 
 	particles.push_back(particle);

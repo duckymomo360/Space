@@ -53,9 +53,3 @@ void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGl
 void Node::AddChild(Node* child) {
 	children.push_back(child);
 }
-
-Node* Node::Copy() {
-	Node* newNode = new Node;
-	memcpy(newNode, this, sizeof(Node));
-	return newNode;
-}

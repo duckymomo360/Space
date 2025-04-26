@@ -35,8 +35,6 @@ public:
 
 	void AddChild(Node* child);
 
-	Node* Copy();
-
 	template<std::derived_from<Component> T>
 	T* GetComponent() {
 		Component* newComponent = new T(this);

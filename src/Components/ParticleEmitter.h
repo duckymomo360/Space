@@ -21,9 +21,9 @@ public:
 
 	float speed = 50.0f;
 
-	void Update(float dt) override;
+	void OnUpdate(float dt) override;
 
-	void Draw(SDL_Renderer* renderer) override;
+	void OnDraw(SDL_Renderer* renderer) override;
 
 	void Emit(Vector2 velocity);
 

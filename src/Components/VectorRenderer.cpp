@@ -6,7 +6,7 @@
 
 #include <optional>
 
-void VectorRendererComponent::Draw(SDL_Renderer* renderer) {
+void VectorRendererComponent::OnDraw(SDL_Renderer* renderer) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 	std::optional<Vector2> last;

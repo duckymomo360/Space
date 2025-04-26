@@ -13,5 +13,5 @@ public:
 
 	std::vector<Vector2> points;
 
-	void Draw(SDL_Renderer* renderer) override;
+	void OnDraw(SDL_Renderer* renderer) override;
 };

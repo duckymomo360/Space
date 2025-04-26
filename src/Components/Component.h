@@ -15,6 +15,11 @@ protected:
 public:
 	const char* className;
 
-	virtual void Update(float dt) {}
-	virtual void Draw(SDL_Renderer* renderer) {}
+	virtual void OnAttached() {}
+
+	virtual void OnDetached() {}
+
+	virtual void OnUpdate(float dt) {}
+
+	virtual void OnDraw(SDL_Renderer* renderer) {}
 };

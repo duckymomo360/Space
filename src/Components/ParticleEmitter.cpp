@@ -6,13 +6,13 @@
 
 #include <random>
 
-void ParticleEmitterComponent::Update(float dt) {
+void ParticleEmitterComponent::OnUpdate(float dt) {
 	for (auto& particle : particles) {
 		particle.position += particle.velocity * dt;
 	}
 }
 
-void ParticleEmitterComponent::Draw(SDL_Renderer* renderer) {
+void ParticleEmitterComponent::OnDraw(SDL_Renderer* renderer) {
 	for (auto& particle : particles) {
 		particle.color.SetRenderDrawColor(renderer);
 

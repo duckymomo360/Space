@@ -1,7 +1,11 @@
-﻿#include <SDL3/SDL_main.h>
-#include "game.h"
+﻿#include "Registry.h"
+#include "Game.h"
 
-int main(int argc, char* argv[]) {
+#include <SDL3/SDL_main.h>
+
+int main(int argc, char* argv[])
+{
+	Registry::Initialize();
 	gGame.Run();
 	return 0;
 }

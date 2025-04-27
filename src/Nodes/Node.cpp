@@ -12,7 +12,7 @@ Node::Node(const char* nodeName) {
 }
 
 void Node::Draw(SDL_Renderer* renderer) {
-	for (auto& component : components) {
+	for (auto& [_, component] : components) {
 		component->OnDraw(renderer);
 	}
 
@@ -32,7 +32,7 @@ void Node::DrawDebugInfo(SDL_Renderer* renderer) {
 }
 
 void Node::Update(float dt) {
-	for (auto& component : components) {
+	for (auto& [_, component] : components) {
 		component->OnUpdate(dt);
 	}
 

@@ -4,6 +4,9 @@
 #include "DataTypes.h"
 
 #include <vector>
+#include <unordered_map>
+#include <typeindex>
+#include <typeinfo>
 
 struct SDL_Renderer;
 
@@ -16,7 +19,7 @@ public:
 	float globalRotation = 0.0f;
 
 	std::vector<Node*> children;
-	std::vector<Component*> components;
+	std::unordered_map<std::type_index, Component*> components;
 
 	char name[32];
 
@@ -37,8 +40,17 @@ public:
 
 	template<std::derived_from<Component> T>
 	T* GetComponent() {
+		std::type_index typeId = typeid(T);
+
+		if (components.contains(typeId)) {
+			return reinterpret_cast<T*>(components[typeId]);
+		}
+
 		Component* newComponent = new T(this);
-		components.push_back(newComponent);
+		components[typeId] = newComponent;
+
+		newComponent->OnAttached();
+
 		return reinterpret_cast<T*>(newComponent);
 	}
 };

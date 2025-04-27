@@ -6,6 +6,7 @@
 
 #include "Nodes/Node.h"
 #include "Nodes/Spaceship.h"
+#include "Components/Editor.h"
 
 void Game::Run() {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -15,7 +16,7 @@ void Game::Run() {
 		return;
 	}
 
-	//SDL_SetRenderVSync(renderer, 1);
+	SDL_SetRenderVSync(renderer, 1);
 
 	SetupScene();
 
@@ -37,6 +38,8 @@ void Game::Run() {
 
 void Game::SetupScene() {
 	sceneRoot = new Node("Root");
+
+	sceneRoot->GetComponent<EditorComponent>();
 
 	sceneRoot->AddChild(new Spaceship());
 }

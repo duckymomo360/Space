@@ -18,10 +18,17 @@ public:
 private:
 	EditMode editMode = EDITMODE_NONE;
 
+	float mouseX = 0.0f;
+	float mouseY = 0.0f;
+
+	bool lmbDown = false;
+
 public:
 	void OnAttached() override;
 
 	void OnDetached() override;
 
 	void OnUpdate(float dt) override;
+
+	void OnDraw(SDL_Renderer* renderer) override;
 };

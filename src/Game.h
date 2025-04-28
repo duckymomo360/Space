@@ -23,11 +23,7 @@ public:
 
 	bool shouldExit = false;
 
-#ifdef _DEBUG
-	bool debug = true;
-#else
 	bool debug = false;
-#endif
 
 	float frameTime;
 	Timer frameTimer;

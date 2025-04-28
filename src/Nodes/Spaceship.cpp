@@ -6,6 +6,10 @@
 
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>
+#include <random>
+
+std::random_device rd;
+std::mt19937 gen(rd());
 
 Spaceship::Spaceship()
 {
@@ -25,7 +29,7 @@ Spaceship::Spaceship()
 	particlePoint->position = { 0.0f, 15.0f };
 	
 	particleEmitter = particlePoint->AddComponent<ParticleEmitterComponent>();
-	particleEmitter->spread = M_PI * 0.3f;
+	particleEmitter->lifetime = 10.f;
 
 	AddChild(particlePoint);
 }
@@ -33,6 +37,11 @@ Spaceship::Spaceship()
 void Spaceship::Update(float deltaTime)
 {
 	Node::Update(deltaTime);
+	 
+	particleEmitter->emissionRate = 0;
+
+	std::uniform_real_distribution<float> dist(M_PI * -.2f, M_PI * .2f);
+	particleEmitter->velocity = velocity * .5f + Vector2::FromAngle(globalRotation + dist(gen)) * 100.f;
 
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_A))
 	{
@@ -47,6 +56,8 @@ void Spaceship::Update(float deltaTime)
 	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE))
 	{
 		velocity += Vector2::FromAngle(rotation + M_PI) * deltaTime * 200.0f;
+
+		particleEmitter->emissionRate = 100;
 	}
 
 	position += velocity * deltaTime;

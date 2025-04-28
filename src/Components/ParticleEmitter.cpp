@@ -7,8 +7,20 @@
 #include <random>
 
 void ParticleEmitterComponent::OnUpdate(float dt) {
-	for (auto& particle : particles) {
-		particle.position += particle.velocity * dt;
+	if (emissionRate > 0 && emissionTimer.Elapsed() >= 1.0 / (double)emissionRate) {
+		emissionTimer.Reset();
+		Emit();
+	}
+
+	for (uint32_t i = 0; i < particles.size(); i++) {
+		if (particles[i].lifeTimer.Elapsed() > lifetime)
+		{
+			particles.erase(particles.begin() + i);
+			i--;
+			continue;
+		}
+
+		particles[i].position += particles[i].velocity * dt;
 	}
 }
 
@@ -22,22 +34,13 @@ void ParticleEmitterComponent::OnDraw(SDL_Renderer* renderer) {
 	}
 }
 
-std::random_device rd;
-std::mt19937 gen(rd());
-
-void ParticleEmitterComponent::Emit(Vector2 velocity) {
-	std::uniform_real_distribution<> dist(-spread, spread);
-
+void ParticleEmitterComponent::Emit() {
 	Particle particle;
 	particle.position = node->globalPosition;
-	particle.velocity = Vector2::FromAngle(node->globalRotation + dist(gen)) * speed;
+	particle.velocity = velocity;
 	particle.color = Color3(255, 165, 0);
 
 	particles.push_back(particle);
-}
-
-void ParticleEmitterComponent::Emit() {
-	Emit(Vector2::Zero);
 }
 
 void ParticleEmitterComponent::Emit(uint32_t count) {
@@ -45,4 +48,3 @@ void ParticleEmitterComponent::Emit(uint32_t count) {
 		Emit();
 	}
 }
-

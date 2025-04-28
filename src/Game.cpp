@@ -11,7 +11,7 @@
 
 void Game::Run()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
 	if (!SDL_CreateWindowAndRenderer("Space", 640, 480, 0, &window, &renderer))
 	{

@@ -13,5 +13,7 @@ public:
 
 	std::vector<Vector2> points;
 
+	Color3 color{ 255, 255, 255 };
+
 	void OnDraw(SDL_Renderer* renderer) override;
 };

@@ -39,6 +39,17 @@ public:
 	void AddChild(Node* child);
 
 	template<std::derived_from<Component> T>
+	T* FindComponent() {
+		std::type_index typeId = typeid(T);
+
+		if (components.contains(typeId)) {
+			return reinterpret_cast<T*>(components[typeId]);
+		}
+
+		return nullptr;
+	}
+
+	template<std::derived_from<Component> T>
 	T* GetComponent() {
 		std::type_index typeId = typeid(T);
 

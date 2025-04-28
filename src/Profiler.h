@@ -10,6 +10,8 @@ class Timer {
 	uint64_t last = 0;
 
 public:
+	Timer() : last(GetPerformanceCounter()) {}
+
 	double Elapsed();
 	void   Reset();
 

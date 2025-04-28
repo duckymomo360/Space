@@ -1,8 +1,12 @@
 #pragma once
 
 #include "Component.h"
+#include "DataTypes.h"
 
 #include <cstdint>
+#include <queue>
+#include <cstdarg>
+#include <string>
 
 enum EditMode : uint8_t
 {
@@ -17,11 +21,20 @@ public:
 
 private:
 	EditMode editMode = EDITMODE_NONE;
+	const char* editModeText = nullptr;
+
+	std::queue<std::string> warnings;
+	std::queue<std::string> messages;
+
+	int selectedPointIndex;
 
 	float mouseX = 0.0f;
 	float mouseY = 0.0f;
 
 	bool lmbDown = false;
+	bool rmbDown = false;
+
+	static void DrawPointerLine(SDL_Renderer* renderer, const Vector2& p1, const Vector2& p2);
 
 public:
 	void OnAttached() override;

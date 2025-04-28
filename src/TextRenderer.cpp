@@ -2,6 +2,7 @@
 
 #include <SDL3_ttf/SDL_ttf.h>
 #include <DataTypes.h>
+#include <cassert>
 
 const std::map<DefaultFont, const char*> fontFiles = {
     {FONT_DEBUG, "data/FONT/Roboto-Regular.ttf"}
@@ -15,9 +16,11 @@ TextRenderer::TextRenderer() {
 }
 
 void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 position, float scale, Color3 color, const char* fmt, ...) {
+    assert(fmt != nullptr);
+
     if (!fontCache.contains(font)) {
         const char* name = fontFiles.at(font);
-        TTF_Font* ttfFont = TTF_OpenFont(name, 8.0f);
+        TTF_Font* ttfFont = TTF_OpenFont(name, 10.0f);
         if (!ttfFont) {
             SDL_Log("Couldn't open font: %s\n", SDL_GetError());
             return;
@@ -53,6 +56,8 @@ void TextRenderer::DrawText(SDL_Renderer* renderer, DefaultFont font, Vector2 po
     dst.w *= scale;
     dst.h *= scale;
 
-    /* Draw the text */
+    // Draw the text
     SDL_RenderTexture(renderer, texture, NULL, &dst);
+
+    SDL_DestroyTexture(texture);
 }

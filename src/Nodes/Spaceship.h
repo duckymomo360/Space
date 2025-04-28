@@ -3,18 +3,21 @@
 #include "Nodes/Node.h"
 #include "DataTypes.h"
 
+#include <memory>
+
 class VectorRendererComponent;
+class ParticleEmitterComponent;
 
-class Spaceship : public Node {
-	VectorRendererComponent* renderer;
-
-	Node* particlePoint;
-	class ParticleEmitterComponent* emitter;
+class Spaceship : public Node
+{
+	std::shared_ptr<Node> particlePoint;
+	std::shared_ptr<VectorRendererComponent> vectorRenderer;
+	std::shared_ptr<ParticleEmitterComponent> particleEmitter;
 
 	Vector2 velocity;
 
 public:
 	Spaceship();
 
-	virtual void Update(float dt);
+	void Update(float deltaTime) override;
 };

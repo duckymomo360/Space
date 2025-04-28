@@ -2,54 +2,55 @@
 
 #include "Game.h"
 
-#include <SDL3/SDL_render.h>
-#include <SDL3_ttf/SDL_ttf.h>
-
-Node::Node() : name("Node") {}
-
-Node::Node(const char* nodeName) {
-	strncpy_s(name, nodeName, sizeof(name));
-}
-
-void Node::Draw(SDL_Renderer* renderer) {
-	for (auto& [_, component] : components) {
-		component->OnDraw(renderer);
-	}
-
-	for (auto& child : children) {
+void Node::Draw(SDL_Renderer* renderer)
+{
+	for (const auto& child : children)
+	{
 		child->Draw(renderer);
 	}
 
-	if (gGame.debug) {
+	for (const auto& [id, component] : components)
+	{
+		component->OnDraw(renderer);
+	}
+
+	if (gGame.debug)
+	{
 		DrawDebugInfo(renderer);
 	}
 }
 
-void Node::DrawDebugInfo(SDL_Renderer* renderer) {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderPoint(renderer, globalPosition.x, globalPosition.y);
-	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, globalPosition + Vector2(2.0f, 2.0f), 1.0f, {255, 0, 0}, name);
-}
-
-void Node::Update(float dt) {
-	for (auto& [_, component] : components) {
-		component->OnUpdate(dt);
+void Node::Update(float deltaTime)
+{
+	for (const auto& child : children)
+	{
+		child->Update(deltaTime);
 	}
 
-	for (auto& child : children) {
-		child->Update(dt);
+	for (const auto& [id, component] : components)
+	{
+		component->OnUpdate(deltaTime);
 	}
 }
 
-void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGlobalRotation) {
+void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGlobalRotation)
+{
 	globalRotation = (parentGlobalRotation + rotation);
 	globalPosition = (parentGlobalPosition + position).RotateAround(parentGlobalPosition, parentGlobalRotation);
 
-	for (auto& child : children) {
+	for (const auto& child : children) {
 		child->UpdateTransformRecursive(globalPosition, globalRotation);
 	}
 }
 
-void Node::AddChild(Node* child) {
-	children.push_back(child);
+void Node::DrawDebugInfo(SDL_Renderer* renderer)
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderPoint(renderer, globalPosition.x, globalPosition.y);
+	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, globalPosition + Vector2(2.0f, 2.0f), 1.0f, { 255, 0, 0 }, name);
+}
+
+void Node::AddChild(const std::shared_ptr<Node>& node)
+{
+	children.push_back(node);
 }

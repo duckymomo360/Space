@@ -7,11 +7,14 @@
 #include "Nodes/Node.h"
 #include "Nodes/Spaceship.h"
 #include "Components/Editor.h"
+#include "Components/VectorRenderer.h"
 
-void Game::Run() {
+void Game::Run()
+{
 	SDL_Init(SDL_INIT_VIDEO);
 
-	if (!SDL_CreateWindowAndRenderer("Space", 640, 480, 0, &window, &renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Space", 640, 480, 0, &window, &renderer))
+	{
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window and renderer: %s\n", SDL_GetError());
 		return;
 	}
@@ -20,7 +23,8 @@ void Game::Run() {
 
 	SetupScene();
 
-	while (!shouldExit) {
+	while (!shouldExit)
+	{
 		frameTime = frameTimer.Elapsed();
 		fpsSampler.Push(1.0 / frameTime);
 		frameTimer.Reset();
@@ -36,43 +40,51 @@ void Game::Run() {
 	SDL_Quit();
 }
 
-void Game::SetupScene() {
-	sceneRoot = new Node("Root");
+void Game::SetupScene()
+{
+	sceneRoot = std::make_shared<Node>();
+	sceneRoot->name = "Root";
 
-	sceneRoot->GetComponent<EditorComponent>();
+	sceneRoot->AddComponent<VectorRendererComponent>();
+	sceneRoot->AddComponent<EditorComponent>();
 
-	sceneRoot->AddChild(new Spaceship());
+	sceneRoot->AddChild(std::make_shared<Spaceship>());
 }
 
-void Game::PollEvents() {
+void Game::PollEvents()
+{
 	SDL_Event event;
 
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
 
 		case SDL_EVENT_QUIT:
 			shouldExit = true;
 			break;
 
 		case SDL_EVENT_KEY_DOWN:
-			if (event.key.scancode == SDL_SCANCODE_F3) {
+			if (event.key.scancode == SDL_SCANCODE_F3)
+			{
 				debug = !debug;
 			}
 			break;
-
 		}
 
 		inputManager.ProcessEvent(event);
 	}
 }
 
-void Game::UpdateScene() {
+void Game::UpdateScene()
+{
 	sceneRoot->UpdateTransformRecursive();
 
 	sceneRoot->Update(frameTime);
 }
 
-void Game::RenderFrame() {
+void Game::RenderFrame()
+{
 	// Clear Screen
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);

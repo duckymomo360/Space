@@ -1,67 +1,66 @@
 #pragma once
 
-#include "Components/Component.h"
 #include "DataTypes.h"
+#include "Components/Component.h"
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 #include <typeindex>
 #include <typeinfo>
 
-struct SDL_Renderer;
-
-class Node {
-public:
-	Vector2 position;
-	float rotation = 0.0f;
-
-	Vector2 globalPosition;
-	float globalRotation = 0.0f;
-
-	std::vector<Node*> children;
-	std::unordered_map<std::type_index, Component*> components;
-
-	char name[32];
-
-public:
-	Node();
-
-	Node(const char* name);
-
-	virtual void Draw(SDL_Renderer* renderer);
-
-	virtual void Update(float dt);
-
-	void UpdateTransformRecursive(Vector2 parentGlobalPosition = Vector2(0.0f, 0.0f), float parentGlobalRotation = 0.0f);
-
+class Node
+{
 	void DrawDebugInfo(SDL_Renderer* renderer);
 
-	void AddChild(Node* child);
+public:
+	const char* name = "Node";
 
-	template<std::derived_from<Component> T>
-	T* FindComponent() {
-		std::type_index typeId = typeid(T);
+	Vector2 position;
+	float   rotation{ 0.0f };
 
-		if (components.contains(typeId)) {
-			return reinterpret_cast<T*>(components[typeId]);
+	Vector2 globalPosition;
+	float   globalRotation{ 0.0f };
+
+	std::vector<std::shared_ptr<Node>> children;
+
+	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
+
+public:
+	virtual void Draw(SDL_Renderer* renderer);
+
+	virtual void Update(float deltaTime);
+
+	void UpdateTransformRecursive(Vector2 parentGlobalPosition = { 0.0f, 0.0f }, float parentGlobalRotation = 0.0f);
+
+	void AddChild(const std::shared_ptr<Node>& node);
+
+	template<std::derived_from<Component> T> std::shared_ptr<T> AddComponent()
+	{
+		auto component = std::make_shared<T>(this);
+		components[typeid(T)] = component;
+		component->OnAttached();
+
+		return static_pointer_cast<T>(component);
+	}
+
+	template<std::derived_from<Component> T> std::shared_ptr<T> GetComponent()
+	{
+		if (components.contains(typeid(T)))
+		{
+			return static_pointer_cast<T>(components[typeid(T)]);
 		}
 
 		return nullptr;
 	}
 
-	template<std::derived_from<Component> T>
-	T* GetComponent() {
-		std::type_index typeId = typeid(T);
-
-		if (components.contains(typeId)) {
-			return reinterpret_cast<T*>(components[typeId]);
+	template<std::derived_from<Component> T> std::shared_ptr<T> GetOrAddComponent()
+	{
+		if (components.contains(typeid(T)))
+		{
+			return static_pointer_cast<T>(components[typeid(T)]);
 		}
 
-		Component* newComponent = new T(this);
-		components[typeId] = newComponent;
-
-		newComponent->OnAttached();
-
-		return reinterpret_cast<T*>(newComponent);
+		return AddComponent<T>();
 	}
 };

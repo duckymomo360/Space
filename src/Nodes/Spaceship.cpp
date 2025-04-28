@@ -7,47 +7,47 @@
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>
 
-Spaceship::Spaceship() {
-	strcpy(name, "Spaceship");
+Spaceship::Spaceship()
+{
+	name = "Spaceship";
+	position = { 300.f, 300.f };
 
-	position.x = 300.0f;
-	position.y = 300.0f;
-
-	renderer = GetComponent<VectorRendererComponent>();
-
-	renderer->scale = 10.0f;
-
-	renderer->points = {
+	vectorRenderer = AddComponent<VectorRendererComponent>();
+	vectorRenderer->scale = 10.0f;
+	vectorRenderer->points = {
 		{-1.0f,  1.0f},
 		{ 0.0f, -1.0f},
 		{ 1.0f,  1.0f},
 	};
 
-	particlePoint = new Node("Emitter");
-	particlePoint->position = Vector2(0.0f, 15.0f);
+	particlePoint = std::make_shared<Node>();
+	particlePoint->name = "ParticlePoint";
+	particlePoint->position = { 0.0f, 15.0f };
 	
-	emitter = particlePoint->GetComponent<ParticleEmitterComponent>();
-	emitter->spread = M_PI * 0.3f;
+	particleEmitter = particlePoint->AddComponent<ParticleEmitterComponent>();
+	particleEmitter->spread = M_PI * 0.3f;
 
 	AddChild(particlePoint);
 }
 
-void Spaceship::Update(float dt) {
-	Node::Update(dt);
+void Spaceship::Update(float deltaTime)
+{
+	Node::Update(deltaTime);
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_A)) {
-		rotation -= dt * 4.0f;
+	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_A))
+	{
+		rotation -= deltaTime * 4.0f;
 	}
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_D)) {
-		rotation += dt * 4.0f;
+	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_D))
+	{
+		rotation += deltaTime * 4.0f;
 	}
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE)) {
-		velocity += Vector2::FromAngle(rotation + M_PI) * dt * 200.0f;
-
-		emitter->Emit();
+	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE))
+	{
+		velocity += Vector2::FromAngle(rotation + M_PI) * deltaTime * 200.0f;
 	}
 
-	position += velocity * dt;
+	position += velocity * deltaTime;
 }

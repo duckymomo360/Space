@@ -6,17 +6,19 @@
 
 #include <vector>
 #include <optional>
+#include <memory>
 
 struct SDL_Window;
 struct SDL_Renderer;
 class Node;
 
-class Game {
+class Game
+{
 public:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 
-	Node* sceneRoot = nullptr;
+	std::shared_ptr<Node> sceneRoot;
 
 	KeyboardInputManager inputManager;
 	TextRenderer textRenderer;

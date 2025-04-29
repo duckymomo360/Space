@@ -54,3 +54,21 @@ void Node::AddChild(const std::shared_ptr<Node>& node)
 {
 	children.push_back(node);
 }
+
+void Node::DetachComponent(Component* componentToDetach)
+{
+	if (!componentToDetach)
+	{
+		return;
+	}
+
+	for (auto it = components.begin(); it != components.end(); ++it)
+	{
+		if (it->second.get() == componentToDetach)
+		{
+			it->second->OnDetached();
+			components.erase(it);
+			return;
+		}
+	}
+}

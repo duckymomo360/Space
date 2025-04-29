@@ -5,10 +5,11 @@
 #include <vector>
 #include <utility>
 
-class VectorRendererComponent : public Component {
-public:
-	COMPONENT_CONSTRUCTOR(VectorRendererComponent);
+class VectorRendererComponent : public Component
+{
+	using Component::Component;
 
+public:
 	float scale = 1.0f;
 
 	std::vector<Vector2> points;

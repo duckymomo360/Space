@@ -7,8 +7,12 @@
 #include <vector>
 #include <utility>
 
-class ParticleEmitterComponent : public Component {
-	struct Particle {
+class ParticleEmitterComponent : public Component
+{
+	using Component::Component;
+
+	struct Particle
+	{
 		Vector2 position;
 		Vector2 velocity;
 		Color3 color;
@@ -20,14 +24,11 @@ class ParticleEmitterComponent : public Component {
 	Timer emissionTimer;
 
 public:
-	Vector2 velocity{ 0.f, 10.f };
+	Vector2 velocity = { 0.f, 10.f };
 
-	uint32_t emissionRate{ 0 };
+	uint32_t emissionRate = 0;
 
-	float lifetime{ 1.f };
-
-public:
-	COMPONENT_CONSTRUCTOR(ParticleEmitterComponent);
+	float lifetime = 1.0f;
 
 	void OnUpdate(float dt) override;
 

@@ -63,4 +63,6 @@ public:
 
 		return AddComponent<T>();
 	}
+
+	void DetachComponent(Component* componentToDetach);
 };

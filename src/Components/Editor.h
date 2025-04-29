@@ -16,8 +16,7 @@ enum EditMode : uint8_t
 
 class EditorComponent : public Component
 {
-public:
-	COMPONENT_CONSTRUCTOR(EditorComponent);
+	using Component::Component;
 
 private:
 	EditMode editMode = EDITMODE_NONE;

@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Components/VectorRenderer.h"
 #include "Components/ParticleEmitter.h"
+#include "Components/SoundPlayer.h"
 
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>
@@ -32,13 +33,21 @@ Spaceship::Spaceship()
 	particleEmitter->lifetime = 10.f;
 
 	AddChild(particlePoint);
+
+	soundPlayer = AddComponent<SoundPlayerComponent>();
+	soundPlayer->wavPath = "data/SOUND/thruster_loop.wav";
 }
 
 void Spaceship::Update(float deltaTime)
 {
 	Node::Update(deltaTime);
-	 
+
 	particleEmitter->emissionRate = 0;
+
+	if (dead)
+	{
+		return;
+	}
 
 	std::uniform_real_distribution<float> dist(M_PI * -.2f, M_PI * .2f);
 	particleEmitter->velocity = velocity * .5f + Vector2::FromAngle(globalRotation + dist(gen)) * 100.f;
@@ -58,7 +67,44 @@ void Spaceship::Update(float deltaTime)
 		velocity += Vector2::FromAngle(rotation + M_PI) * deltaTime * 200.0f;
 
 		particleEmitter->emissionRate = 100;
+
+		if (!soundPlayer->playing)
+		{
+			soundPlayer->Play();
+		}
+	}
+	else
+	{
+		soundPlayer->Stop();
+	}
+
+	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_E))
+	{
+		Explode();
 	}
 
 	position += velocity * deltaTime;
+}
+
+void Spaceship::Explode()
+{
+	if (dead) return;
+
+	auto sound = AddComponent<SoundPlayerComponent>();
+	sound->wavPath = "data/SOUND/explosion_02.wav";
+	sound->Play();
+
+	Die();
+}
+
+void Spaceship::Die()
+{
+	if (dead) return;
+
+	dead = true;
+
+	if (auto renderer = GetComponent<VectorRendererComponent>(); renderer)
+	{
+		renderer->Detach();
+	}
 }

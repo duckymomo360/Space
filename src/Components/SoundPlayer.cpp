@@ -10,17 +10,9 @@ void SoundPlayerComponent::Play()
 		return;
 	}
 
-	stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audioSpec, NULL, NULL);
-
-	if (!stream)
+	if (!SDL_ClearAudioStream(stream))
 	{
-		SDL_Log("Failed to create audio stream: %s", SDL_GetError());
-		return;
-	}
-
-	if (!SDL_ResumeAudioStreamDevice(stream))
-	{
-		SDL_Log("Failed to resume audio stream device: %s", SDL_GetError());
+		SDL_Log("Failed to clear audio stream data: %s", SDL_GetError());
 		return;
 	}
 
@@ -30,7 +22,23 @@ void SoundPlayerComponent::Play()
 		return;
 	}
 
-	SDL_Log("Audio should now be playing");
+	playing = true;
+}
+
+void SoundPlayerComponent::Stop()
+{
+	if (!loaded)
+	{
+		return;
+	}
+
+	if (!SDL_ClearAudioStream(stream))
+	{
+		SDL_Log("Failed to clear audio stream data: %s", SDL_GetError());
+		return;
+	}
+
+	playing = false;
 }
 
 bool SoundPlayerComponent::PreloadWAV()
@@ -38,18 +46,31 @@ bool SoundPlayerComponent::PreloadWAV()
 	if (!wavPath)
 	{
 		SDL_Log("wavPath is null");
-		return;
+		return false;
 	}
 
 	if (!loaded && SDL_LoadWAV(wavPath, &audioSpec, &audioBuffer, &audioLength))
 	{
+		stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audioSpec, NULL, NULL);
+
+		if (!stream)
+		{
+			SDL_Log("Failed to create audio stream: %s", SDL_GetError());
+			return loaded;
+		}
+
+		if (!SDL_ResumeAudioStreamDevice(stream))
+		{
+			SDL_Log("Failed to resume audio stream device: %s", SDL_GetError());
+			return loaded;
+		}
+
 		loaded = true;
 	}
 
 	if (!loaded)
 	{
 		SDL_Log("Failed to load audio: %s", SDL_GetError());
-		return;
 	}
 
 	return loaded;

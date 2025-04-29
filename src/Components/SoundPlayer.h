@@ -7,6 +7,8 @@
 
 class SoundPlayerComponent : public Component
 {
+	using Component::Component;
+
 	SDL_AudioStream* stream;
 	SDL_AudioSpec audioSpec;
 	uint8_t* audioBuffer;
@@ -20,6 +22,8 @@ public:
 	bool loaded = false;
 
 	void Play();
+
+	void Stop();
 
 	bool PreloadWAV();
 

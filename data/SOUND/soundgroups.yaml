@@ -1,0 +1,4 @@
+soundgroups:
+  explosion:
+    - explosion_01.wav
+    - explosion_02.wav

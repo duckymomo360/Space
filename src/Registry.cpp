@@ -1,9 +1,12 @@
 #include "Registry.h"
 
+#include "Components/Component.h"
 #include "Components/VectorRenderer.h"
 #include "Components/ParticleEmitter.h"
 #include "Components/Editor.h"
+#include "Components/SoundPlayer.h"
 
+#include "Nodes/Node.h"
 #include "Nodes/Spaceship.h"
 
 #include <unordered_map>
@@ -38,9 +41,11 @@ inline void Register(std::type_index typeIndex, const char* className)
  */
 inline void InitializeComponents()
 {
+	REGISTER(Component);
 	REGISTER(VectorRendererComponent);
 	REGISTER(ParticleEmitterComponent);
 	REGISTER(EditorComponent);
+	REGISTER(SoundPlayerComponent);
 }
 
 /**
@@ -48,6 +53,7 @@ inline void InitializeComponents()
  */
 inline void InitializeNodes()
 {
+	REGISTER(Node);
 	REGISTER(Spaceship);
 }
 

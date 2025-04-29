@@ -156,6 +156,7 @@ void EditorComponent::DrawPointerLine(SDL_Renderer* renderer, const Vector2& p1,
 	for (float i = 1; i < numArrows; i++)
 	{
 		Node node;
+		node.name = "Arrow";
 
 		auto vr = node.AddComponent<VectorRendererComponent>();
 		vr->color = Color3(150, 150, 255);

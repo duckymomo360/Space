@@ -19,6 +19,8 @@ void Game::Run()
 		return;
 	}
 
+	SDL_SetWindowFullscreen(window, true);
+
 	SDL_SetRenderVSync(renderer, 1);
 
 	SetupScene();

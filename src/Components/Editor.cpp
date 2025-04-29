@@ -23,7 +23,7 @@ void EditorComponent::OnDetached()
 
 void EditorComponent::OnUpdate(float dt)
 {
-	const bool* keyStates = SDL_GetKeyboardState(nullptr);
+	static const bool* keyStates = SDL_GetKeyboardState(NULL);
 
 	if (keyStates[SDL_SCANCODE_F1])
 	{

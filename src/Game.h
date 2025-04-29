@@ -1,6 +1,5 @@
 #pragma once
 
-#include "KeyboardInputManager.h"
 #include "TextRenderer.h"
 #include "Profiler.h"
 
@@ -20,7 +19,6 @@ public:
 
 	std::shared_ptr<Node> sceneRoot;
 
-	KeyboardInputManager inputManager;
 	TextRenderer textRenderer;
 
 	bool shouldExit = false;

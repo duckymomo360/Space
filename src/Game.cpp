@@ -73,8 +73,6 @@ void Game::PollEvents()
 			}
 			break;
 		}
-
-		inputManager.ProcessEvent(event);
 	}
 }
 

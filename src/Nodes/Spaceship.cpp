@@ -52,17 +52,19 @@ void Spaceship::Update(float deltaTime)
 	std::uniform_real_distribution<float> dist(M_PI * -.2f, M_PI * .2f);
 	particleEmitter->velocity = velocity * .5f + Vector2::FromAngle(globalRotation + dist(gen)) * 100.f;
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_A))
+	static const bool* keyStates = SDL_GetKeyboardState(NULL);
+
+	if (keyStates[SDL_SCANCODE_A])
 	{
 		rotation -= deltaTime * 4.0f;
 	}
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_D))
+	if (keyStates[SDL_SCANCODE_D])
 	{
 		rotation += deltaTime * 4.0f;
 	}
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_SPACE))
+	if (keyStates[SDL_SCANCODE_SPACE])
 	{
 		velocity += Vector2::FromAngle(rotation + M_PI) * deltaTime * 200.0f;
 
@@ -78,7 +80,7 @@ void Spaceship::Update(float deltaTime)
 		soundPlayer->Stop();
 	}
 
-	if (gGame.inputManager.IsKeyDown(SDL_SCANCODE_E))
+	if (keyStates[SDL_SCANCODE_E])
 	{
 		Explode();
 	}

@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 # Add source to this project's executable.
-add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp"  "src/KeyboardInputManager.cpp" "src/KeyboardInputManager.h" "src/DataTypes.h" "src/DataTypes.cpp" "src/TextRenderer.h" "src/TextRenderer.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h"  "src/Components/Component.cpp")
+add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp"    "src/DataTypes.h" "src/DataTypes.cpp" "src/TextRenderer.h" "src/TextRenderer.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h"  "src/Components/Component.cpp")
 
 # Include base source
 target_include_directories(Space PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")

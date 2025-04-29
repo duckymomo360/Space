@@ -9,6 +9,8 @@ protected:
 	Node* node;
 
 public:
+	bool enabled = true;
+
 	Component(Node* node) : node(node) {}
 
 	virtual void OnAttached() {}

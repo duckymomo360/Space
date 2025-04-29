@@ -104,8 +104,6 @@ void Spaceship::Die()
 
 	dead = true;
 
-	if (auto renderer = GetComponent<VectorRendererComponent>(); renderer)
-	{
-		renderer->Detach();
-	}
+
+	vectorRenderer->enabled = false;
 }

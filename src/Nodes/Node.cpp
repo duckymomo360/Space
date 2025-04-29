@@ -11,7 +11,10 @@ void Node::Draw(SDL_Renderer* renderer)
 
 	for (const auto& [id, component] : components)
 	{
-		component->OnDraw(renderer);
+		if (component->enabled)
+		{
+			component->OnDraw(renderer);
+		}
 	}
 
 	if (gGame.debug)
@@ -29,7 +32,10 @@ void Node::Update(float deltaTime)
 
 	for (const auto& [id, component] : components)
 	{
-		component->OnUpdate(deltaTime);
+		if (component->enabled)
+		{
+			component->OnUpdate(deltaTime);
+		}
 	}
 }
 

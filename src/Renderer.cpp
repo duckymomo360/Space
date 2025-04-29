@@ -74,6 +74,11 @@ struct CachedFont
 	{
 		return pointSize > 0.0f && sdlFont != NULL;
 	}
+
+	~CachedFont()
+	{
+		TTF_CloseFont(sdlFont);
+	}
 };
 
 std::shared_ptr<CachedFont> Renderer::GetCachedFont(EngineFont font, float pointSize) const

@@ -90,9 +90,10 @@ void Spaceship::Explode()
 {
 	if (dead) return;
 
-	auto sound = AddComponent<SoundPlayerComponent>();
-	sound->wavPath = "data/SOUND/explosion_02.wav";
-	sound->Play();
+	// TODO: Only one of each component type can be attached.
+	// auto sound = AddComponent<SoundPlayerComponent>();
+	// sound->wavPath = "data/SOUND/explosion_02.wav";
+	// sound->Play();
 
 	Die();
 }

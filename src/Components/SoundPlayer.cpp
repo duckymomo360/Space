@@ -82,4 +82,5 @@ void SoundPlayerComponent::OnAttached()
 
 void SoundPlayerComponent::OnDetached()
 {
+	SDL_DestroyAudioStream(stream);
 }

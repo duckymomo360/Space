@@ -143,6 +143,9 @@ void Renderer::RenderText(
 	}
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+
+	SDL_DestroySurface(surface);
+
 	if (!texture)
 	{
 		SDL_Log("Couldn't create text: %s\n", SDL_GetError());

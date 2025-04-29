@@ -104,6 +104,7 @@ void Spaceship::Die()
 
 	dead = true;
 
+	soundPlayer->Stop();
 
 	vectorRenderer->enabled = false;
 }

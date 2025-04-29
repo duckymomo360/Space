@@ -25,6 +25,8 @@ public:
 
 	~Renderer();
 
+	void DrawRendererDebugInfo();
+
 	void Clear(Color4 color);
 
 	void Present();

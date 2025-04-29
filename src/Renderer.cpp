@@ -1,10 +1,12 @@
 #include "Renderer.h"
 
+#include "Game.h"
 #include "DataTypes.h"
 
 #include <SDL3/SDL_render.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <vector>
+#include <format>
 
 const char* fontFiles[FONT_COUNT] = {
 	"data/FONT/Roboto-Regular.ttf", // FONT_DEBUG
@@ -36,6 +38,12 @@ Renderer::~Renderer()
 	SDL_DestroyRenderer(sdlRenderer);
 }
 
+void Renderer::DrawRendererDebugInfo()
+{
+	auto debugFont = GetCachedFont(FONT_DEBUG, 20.0f);
+	RenderText(std::format("LOADED FONTS: {}", fontCache.size()), { 0.0f, 400.0f }, Vector2::Zero, Color4::Blue, debugFont, 1.0f);
+}
+
 void Renderer::Clear(Color4 color)
 {
 	SDL_SetRenderDrawColor(sdlRenderer, color.g, color.g, color.b, color.a);
@@ -44,6 +52,11 @@ void Renderer::Clear(Color4 color)
 
 void Renderer::Present()
 {
+	if (gGame.debug)
+	{
+		DrawRendererDebugInfo();
+	}
+
 	SDL_RenderPresent(sdlRenderer);
 }
 
@@ -116,6 +129,7 @@ std::shared_ptr<CachedFont> Renderer::GetCachedFont(EngineFont font, float point
 	if (cachedFont->IsValid())
 	{
 		fontCache.push_back(cachedFont);
+		SDL_Log("Font cached: %s %.1f", fontFiles[font], pointSize);
 	}
 
 	return cachedFont;

@@ -1,12 +1,12 @@
 #include "VectorRenderer.h"
-#include "Nodes/Node.h"
 
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL.h>
+#include "Renderer.h"
+#include "Nodes/Node.h"
 
 #include <optional>
 
-int VectorRendererComponent::FindNearestPointIndex(const Vector2& point, float maxDistance) {
+int VectorRendererComponent::FindNearestPointIndex(const Vector2& point, float maxDistance)
+{
 	int nearestPointIndex = -1;
 
 	for (int index = 0; index < points.size(); ++index) {
@@ -19,9 +19,8 @@ int VectorRendererComponent::FindNearestPointIndex(const Vector2& point, float m
 	return nearestPointIndex;
 }
 
-void VectorRendererComponent::OnDraw(SDL_Renderer* renderer) {
-	color.SetRenderDrawColor(renderer);
-
+void VectorRendererComponent::OnDraw(Renderer* renderer)
+{
 	std::optional<Vector2> last;
 
 	for (Vector2 point : points) {
@@ -30,7 +29,7 @@ void VectorRendererComponent::OnDraw(SDL_Renderer* renderer) {
 		Vector2 world = rotated + node->globalPosition;
 
 		if (last.has_value()) {
-			SDL_RenderLine(renderer, last->x, last->y, world.x, world.y);
+			renderer->RenderLine(last.value(), world, color);
 		}
 
 		last = world;

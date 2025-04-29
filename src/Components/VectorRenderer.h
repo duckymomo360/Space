@@ -14,9 +14,9 @@ public:
 
 	std::vector<Vector2> points;
 
-	Color3 color{ 255, 255, 255 };
+	Color4 color = { 255, 255, 255, 255 };
 
 	int FindNearestPointIndex(const Vector2& point, float maxDistance = 10000.0f);
 
-	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDraw(Renderer* renderer) override;
 };

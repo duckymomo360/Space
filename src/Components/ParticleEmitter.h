@@ -15,7 +15,7 @@ class ParticleEmitterComponent : public Component
 	{
 		Vector2 position;
 		Vector2 velocity;
-		Color3 color;
+		Color4 color;
 		Timer lifeTimer;
 	};
 
@@ -32,7 +32,7 @@ public:
 
 	void OnUpdate(float dt) override;
 
-	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDraw(Renderer* renderer) override;
 
 	void Emit();
 

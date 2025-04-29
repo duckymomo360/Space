@@ -78,30 +78,13 @@ struct Vector2 {
     static const Vector2 Right;
 };
 
-struct Color3 {
-	uint8_t r{}, g{}, b{};
+struct Color4
+{
+	uint8_t r, g, b, a;
 
-	Color3() : r(0), g(0), b(0) {};
-
-	Color3(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {};
-
-	SDL_Color SDL_Color() {
-		return { r, g, b, 255 };
-	}
-
-	void SetRenderDrawColor(SDL_Renderer* renderer) {
-		SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-	}
-};
-
-struct Color4 {
-	Uint8 r, g, b, a;
-
-	struct SDL_Color SDL_Color() {
-		return { r, g, b, a };
-	}
-
-	void SetRenderDrawColor(SDL_Renderer* renderer) {
-		SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	}
+	static const Color4 Red;
+	static const Color4 Green;
+	static const Color4 Blue;
+	static const Color4 Black;
+	static const Color4 White;
 };

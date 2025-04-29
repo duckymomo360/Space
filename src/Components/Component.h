@@ -1,7 +1,7 @@
 #pragma once
 
 class Node;
-struct SDL_Renderer;
+class Renderer;
 
 class Component
 {
@@ -19,7 +19,7 @@ public:
 
 	virtual void OnUpdate(float dt) {}
 
-	virtual void OnDraw(SDL_Renderer* renderer) {}
+	virtual void OnDraw(Renderer* renderer) {}
 
 	void Detach();
 };

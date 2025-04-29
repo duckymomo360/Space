@@ -11,7 +11,7 @@
 
 class Node
 {
-	void DrawDebugInfo(SDL_Renderer* renderer);
+	void DrawDebugInfo(Renderer* renderer);
 
 public:
 	const char* name = "Node";
@@ -27,7 +27,7 @@ public:
 	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 
 public:
-	virtual void Draw(SDL_Renderer* renderer);
+	virtual void Draw(Renderer* renderer);
 
 	virtual void Update(float deltaTime);
 

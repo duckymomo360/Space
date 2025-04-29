@@ -33,7 +33,7 @@ private:
 	bool lmbDown = false;
 	bool rmbDown = false;
 
-	static void DrawPointerLine(SDL_Renderer* renderer, const Vector2& p1, const Vector2& p2);
+	static void DrawPointerLine(Renderer* renderer, const Vector2& p1, const Vector2& p2);
 
 public:
 	void OnAttached() override;
@@ -42,5 +42,5 @@ public:
 
 	void OnUpdate(float dt) override;
 
-	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDraw(Renderer* renderer) override;
 };

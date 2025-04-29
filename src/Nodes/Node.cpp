@@ -1,8 +1,9 @@
 #include "Node.h"
 
 #include "Game.h"
+#include "Renderer.h"
 
-void Node::Draw(SDL_Renderer* renderer)
+void Node::Draw(Renderer* renderer)
 {
 	for (const auto& child : children)
 	{
@@ -49,11 +50,12 @@ void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGl
 	}
 }
 
-void Node::DrawDebugInfo(SDL_Renderer* renderer)
+void Node::DrawDebugInfo(Renderer* renderer)
 {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderPoint(renderer, globalPosition.x, globalPosition.y);
-	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, globalPosition + Vector2(2.0f, 2.0f), 1.0f, { 255, 0, 0 }, name);
+	renderer->RenderPoint(globalPosition, Color4::Red);
+
+	static auto debugFont = renderer->GetCachedFont(FONT_DEBUG, 16.0f);
+	renderer->RenderText(name, globalPosition + Vector2(2.0f, 2.0f), Vector2::Zero, Color4::Red, debugFont, 1.0f);
 }
 
 void Node::AddChild(const std::shared_ptr<Node>& node)

@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "DataTypes.h"
+#include "Renderer.h"
 #include "Nodes/Node.h"
 #include "Components/VectorRenderer.h"
 
@@ -109,22 +110,24 @@ void EditorComponent::OnUpdate(float dt)
 	}
 }
 
-void EditorComponent::OnDraw(SDL_Renderer* renderer)
+void EditorComponent::OnDraw(Renderer* renderer)
 {
 	int w, h;
 	SDL_GetWindowSizeInPixels(gGame.window, &w, &h);
 
-	gGame.textRenderer.DrawText(renderer, FONT_DEBUG, Vector2(5, h - 20), 1.5f, Color3(255, 0, 255), editModeText);
+	static auto editorFont = renderer->GetCachedFont(FONT_DEBUG, 16.0f);
+
+	renderer->RenderText(editModeText, Vector2(5, h - 20), Vector2::Zero, { 255, 0, 255, 255 }, editorFont);
 
 	while (!warnings.empty())
 	{
-		gGame.textRenderer.DrawText(renderer, FONT_DEBUG, Vector2(200, h - 20 * (messages.size() + warnings.size())), 1.5f, Color3(255, 0, 0), warnings.front().c_str());
+		renderer->RenderText(warnings.front(), Vector2(200, h - 20 * (messages.size() + warnings.size())), Vector2::Zero, Color4::Red, editorFont);
 		warnings.pop();
 	}
 
 	while (!messages.empty())
 	{
-		gGame.textRenderer.DrawText(renderer, FONT_DEBUG, Vector2(200, h - 20 * (messages.size() + warnings.size())), 1.5f, Color3(255, 255, 255), messages.front().c_str());
+		renderer->RenderText(messages.front(), Vector2(200, h - 20 * (messages.size() + warnings.size())), Vector2::Zero, Color4::White, editorFont);
 		messages.pop();
 	}
 
@@ -133,9 +136,8 @@ void EditorComponent::OnDraw(SDL_Renderer* renderer)
 		auto vectorRenderer = node->GetOrAddComponent<VectorRendererComponent>();
 		const Vector2& point = vectorRenderer->points[selectedPointIndex];
 
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderLine(renderer, point.x - 5.f, point.y - 5.f, point.x + 5.f, point.y + 5.f);
-		SDL_RenderLine(renderer, point.x - 5.f, point.y + 5.f, point.x + 5.f, point.y - 5.f);
+		renderer->RenderLine(point + Vector2::One, point + Vector2::One, Color4::Red);
+		renderer->RenderLine(point - Vector2::One, point - Vector2::One, Color4::Red);
 
 		if (selectedPointIndex + 1 < vectorRenderer->points.size())
 		{
@@ -149,7 +151,7 @@ void EditorComponent::OnDraw(SDL_Renderer* renderer)
 	}
 }
 
-void EditorComponent::DrawPointerLine(SDL_Renderer* renderer, const Vector2& p1, const Vector2& p2)
+void EditorComponent::DrawPointerLine(Renderer* renderer, const Vector2& p1, const Vector2& p2)
 {
 	float numArrows = floorf(p1.DistanceFrom(p2) / 40.0f) + 1.0f;
 
@@ -159,7 +161,7 @@ void EditorComponent::DrawPointerLine(SDL_Renderer* renderer, const Vector2& p1,
 		node.name = "Arrow";
 
 		auto vr = node.AddComponent<VectorRendererComponent>();
-		vr->color = Color3(150, 150, 255);
+		vr->color = { 150, 150, 255, 255 };
 		vr->scale = 5.0f;
 		vr->points = {
 			{-1.0f, -1.0f},

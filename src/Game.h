@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TextRenderer.h"
+#include "Renderer.h"
 #include "Profiler.h"
 
 #include <vector>
@@ -15,11 +15,10 @@ class Game
 {
 public:
 	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
 
 	std::shared_ptr<Node> sceneRoot;
 
-	TextRenderer textRenderer;
+	Renderer* renderer;
 
 	bool shouldExit = false;
 

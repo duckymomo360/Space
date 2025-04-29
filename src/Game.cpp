@@ -8,20 +8,23 @@
 #include "Nodes/Spaceship.h"
 #include "Components/Editor.h"
 #include "Components/VectorRenderer.h"
+#include <format>
 
 void Game::Run()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
-	if (!SDL_CreateWindowAndRenderer("Space", 640, 480, 0, &window, &renderer))
+	window = SDL_CreateWindow("Space", 640, 480, NULL);
+
+	if (!window)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window and renderer: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
 		return;
 	}
 
 	SDL_SetWindowFullscreen(window, true);
 
-	SDL_SetRenderVSync(renderer, 1);
+	renderer = new Renderer(window);
 
 	SetupScene();
 
@@ -36,7 +39,6 @@ void Game::Run()
 		RenderFrame();
 	}
 
-	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
 	SDL_Quit();
@@ -85,14 +87,12 @@ void Game::UpdateScene()
 
 void Game::RenderFrame()
 {
-	// Clear Screen
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	renderer->Clear(Color4::Black);
 
 	sceneRoot->Draw(renderer);
 
-	textRenderer.DrawText(renderer, FONT_DEBUG, Vector2::Zero, 2.0f, {255, 255, 255}, "FPS %.f", fpsSampler.Average());
+	static auto fpsFont = renderer->GetCachedFont(FONT_DEBUG, 16.0f);
+	renderer->RenderText(std::format("FPS {:.0f}", fpsSampler.Average()), Vector2::Zero, Vector2::Zero, Color4::White, fpsFont);
 
-	// Present
-	SDL_RenderPresent(renderer);
+	renderer->Present();
 }

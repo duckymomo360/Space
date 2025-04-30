@@ -9,6 +9,8 @@ struct SDL_Window;
 class Vector2;
 class Color4;
 
+class Camera;
+
 enum EngineFont : uint8_t {
 	FONT_DEBUG,
 	FONT_COUNT,
@@ -24,6 +26,10 @@ public:
 	Renderer(SDL_Window* sdlWindow);
 
 	~Renderer();
+
+	std::shared_ptr<Camera> currentCamera;
+
+	void ToCameraSpace(Vector2& vector) const;
 
 	void DrawRendererDebugInfo();
 

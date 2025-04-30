@@ -40,7 +40,7 @@ public:
 
 	void OnDetached() override;
 
-	void OnUpdate(float dt) override;
+	void OnUpdate(float deltaTime) override;
 
 	void OnDraw(Renderer* renderer) override;
 };

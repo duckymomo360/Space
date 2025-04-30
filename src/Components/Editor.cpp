@@ -4,6 +4,7 @@
 #include "DataTypes.h"
 #include "Renderer.h"
 #include "Nodes/Node.h"
+#include "Nodes/Camera.h"
 #include "Components/VectorRenderer.h"
 
 #include <SDL3/SDL_scancode.h>
@@ -22,7 +23,7 @@ void EditorComponent::OnDetached()
 {
 }
 
-void EditorComponent::OnUpdate(float dt)
+void EditorComponent::OnUpdate(float deltaTime)
 {
 	static const bool* keyStates = SDL_GetKeyboardState(NULL);
 
@@ -48,6 +49,20 @@ void EditorComponent::OnUpdate(float dt)
 		rmbPressed = true;
 
 	rmbDown = mouseButtonState & SDL_BUTTON_RMASK;
+
+
+	if (keyStates[SDL_SCANCODE_UP])
+		gGame.renderer->currentCamera->position.y -= 200.0f * deltaTime;
+
+	if (keyStates[SDL_SCANCODE_DOWN])
+		gGame.renderer->currentCamera->position.y += 200.0f * deltaTime;
+
+	if (keyStates[SDL_SCANCODE_LEFT])
+		gGame.renderer->currentCamera->position.x -= 200.0f * deltaTime;
+
+	if (keyStates[SDL_SCANCODE_RIGHT])
+		gGame.renderer->currentCamera->position.x += 200.0f * deltaTime;
+
 
 	switch (editMode)
 	{

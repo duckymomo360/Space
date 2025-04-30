@@ -5,9 +5,11 @@
 #include <SDL3/SDL_render.h>
 
 #include "Nodes/Node.h"
+#include "Nodes/Camera.h"
 #include "Nodes/Spaceship.h"
 #include "Components/Editor.h"
 #include "Components/VectorRenderer.h"
+
 #include <format>
 
 void Game::Run()
@@ -53,6 +55,12 @@ void Game::SetupScene()
 	sceneRoot->AddComponent<EditorComponent>();
 
 	sceneRoot->AddChild(std::make_shared<Spaceship>());
+
+	auto camera = std::make_shared<Camera>();
+	camera->position = { -100.0f, -100.0f };
+	sceneRoot->AddChild(camera);
+
+	renderer->currentCamera = camera;
 }
 
 void Game::PollEvents()

@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "DataTypes.h"
+#include "Nodes/Camera.h"
 
 #include <SDL3/SDL_render.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -38,6 +39,15 @@ Renderer::~Renderer()
 	SDL_DestroyRenderer(sdlRenderer);
 }
 
+void Renderer::ToCameraSpace(Vector2& vector) const
+{
+	if (currentCamera)
+	{
+		vector.x -= currentCamera->globalPosition.x;
+		vector.y -= currentCamera->globalPosition.y;
+	}
+}
+
 void Renderer::DrawRendererDebugInfo()
 {
 	auto debugFont = GetCachedFont(FONT_DEBUG, 20.0f);
@@ -60,21 +70,26 @@ void Renderer::Present()
 	SDL_RenderPresent(sdlRenderer);
 }
 
-void Renderer::RenderLine(const Vector2 point1, const Vector2 point2, const Color4 color) const
+void Renderer::RenderLine(Vector2 point1, Vector2 point2, Color4 color) const
 {
+	ToCameraSpace(point1);
+	ToCameraSpace(point2);
+
 	SDL_SetRenderDrawColor(sdlRenderer, color.r, color.g, color.b, color.a);
 	SDL_RenderLine(sdlRenderer, point1.x, point1.y, point2.x, point2.y);
 }
 
-void Renderer::RenderPoint(const Vector2 point, const Color4 color) const
+void Renderer::RenderPoint(Vector2 point, Color4 color) const
 {
+	ToCameraSpace(point);
+
 	SDL_SetRenderDrawColor(sdlRenderer, color.r, color.g, color.b, color.a);
 	SDL_RenderPoint(sdlRenderer, point.x, point.y);
 }
 
-void Renderer::RenderCircle(const Vector2 origin, float radius, const Color4 color) const
+void Renderer::RenderCircle(Vector2 origin, float radius, Color4 color) const
 {
-
+	ToCameraSpace(origin);
 }
 
 struct CachedFont
@@ -165,6 +180,8 @@ void Renderer::RenderText(
 		SDL_Log("Couldn't create text: %s\n", SDL_GetError());
 		return;
 	}
+
+	ToCameraSpace(position);
 
 	SDL_FRect dst;
 	SDL_GetTextureSize(texture, &dst.w, &dst.h);

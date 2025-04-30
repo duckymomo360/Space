@@ -49,6 +49,15 @@ struct Vector2 {
 		return { qx, qy };
 	}
 
+	float Magnitude() const {
+		return sqrt(x * x + y * y);
+	}
+
+	Vector2 Normalize() const {
+		float m = Magnitude();
+		return { x / m, y / m};
+	}
+
 	float DistanceFrom(const Vector2& other) const {
 		float dx = other.x - x;
 		float dy = other.y - y;

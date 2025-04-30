@@ -166,11 +166,14 @@ void EditorComponent::OnDraw(Renderer* renderer)
 	}
 }
 
-void EditorComponent::DrawPointerLine(Renderer* renderer, const Vector2& p1, const Vector2& p2)
+void EditorComponent::DrawPointerLine(Renderer* renderer, Vector2 p1, Vector2 p2)
 {
-	float numArrows = floorf(p1.DistanceFrom(p2) / 40.0f) + 1.0f;
+	Vector2 delta = p2 - p1;
+	Vector2 direction = delta.Normalize();
+	float rotation = atan2(delta.y, delta.x);
+	float numArrows = floorf(delta.Magnitude() / 40.0f) + 1.0f;
 
-	for (float i = 1; i < numArrows; i++)
+	for (float i = 1; i < numArrows; ++i)
 	{
 		Node node;
 		node.name = "Arrow";
@@ -184,9 +187,7 @@ void EditorComponent::DrawPointerLine(Renderer* renderer, const Vector2& p1, con
 			{ 1.0f, -1.0f},
 		};
 
-		// This should use normalization instead
-		float r = atan2(p1.x - p2.x, p2.y - p1.y);
-		node.UpdateTransformRecursive(p1 + Vector2::FromAngle(r) * (i * 40.f), r);
+		node.UpdateTransformRecursive(p1 + direction * (i * 40.f), rotation);
 
 		node.Draw(renderer);
 	}

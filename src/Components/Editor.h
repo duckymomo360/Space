@@ -33,7 +33,7 @@ private:
 	bool lmbDown = false;
 	bool rmbDown = false;
 
-	static void DrawPointerLine(Renderer* renderer, const Vector2& p1, const Vector2& p2);
+	static void DrawPointerLine(Renderer* renderer, Vector2 p1, Vector2 p2);
 
 public:
 	void OnAttached() override;

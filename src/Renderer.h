@@ -31,11 +31,11 @@ public:
 
 	void ToCameraSpace(Vector2& vector) const;
 
-	void DrawRendererDebugInfo();
+	void DrawRendererDebugInfo() const;
 
-	void Clear(Color4 color);
+	void Clear(Color4 color) const;
 
-	void Present();
+	void Present() const;
 
 	void RenderLine(Vector2 point1, Vector2 point2, Color4 color) const;
 

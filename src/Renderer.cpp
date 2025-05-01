@@ -48,19 +48,19 @@ void Renderer::ToCameraSpace(Vector2& vector) const
 	}
 }
 
-void Renderer::DrawRendererDebugInfo()
+void Renderer::DrawRendererDebugInfo() const
 {
 	auto debugFont = GetCachedFont(FONT_DEBUG, 20.0f);
 	RenderText(std::format("LOADED FONTS: {}", fontCache.size()), { 0.0f, 400.0f }, Vector2::Zero, Color4::Blue, debugFont, 1.0f);
 }
 
-void Renderer::Clear(Color4 color)
+void Renderer::Clear(Color4 color) const
 {
 	SDL_SetRenderDrawColor(sdlRenderer, color.g, color.g, color.b, color.a);
 	SDL_RenderClear(sdlRenderer);
 }
 
-void Renderer::Present()
+void Renderer::Present() const
 {
 	if (gGame.debug)
 	{
@@ -96,7 +96,7 @@ struct CachedFont
 {
 	EngineFont font;
 	float      pointSize;
-	TTF_Font*  sdlFont;
+	TTF_Font* sdlFont;
 
 	inline bool IsValid()
 	{

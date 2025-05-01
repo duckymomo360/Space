@@ -50,7 +50,7 @@ void Renderer::ToCameraSpace(Vector2& vector) const
 
 void Renderer::DrawRendererDebugInfo() const
 {
-	auto debugFont = GetCachedFont(FONT_DEBUG, 20.0f);
+	static auto debugFont = GetCachedFont(FONT_DEBUG, 16.0f);
 	RenderText(std::format("LOADED FONTS: {}", fontCache.size()), { 0.0f, 400.0f }, Vector2::Zero, Color4::Blue, debugFont, 1.0f);
 }
 

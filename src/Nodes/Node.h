@@ -35,6 +35,8 @@ public:
 
 	void AddChild(const std::shared_ptr<Node>& node);
 
+	std::shared_ptr<Node> FindFirstChild(const char* name, bool recursive = false);
+
 	template<std::derived_from<Component> T> std::shared_ptr<T> AddComponent()
 	{
 		auto component = std::make_shared<T>(this);

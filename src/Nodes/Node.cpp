@@ -63,6 +63,27 @@ void Node::AddChild(const std::shared_ptr<Node>& node)
 	children.push_back(node);
 }
 
+std::shared_ptr<Node> Node::FindFirstChild(const char* name, bool recursive)
+{
+	for (const auto child : children)
+	{
+		if (strcmp(name, child->name) == 0)
+		{
+			return child;
+		}
+
+		if (recursive)
+		{
+			if (const auto found = child->FindFirstChild(name, true); found)
+			{
+				return found;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 void Node::DetachComponent(Component* componentToDetach)
 {
 	if (!componentToDetach)

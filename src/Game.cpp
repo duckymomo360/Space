@@ -55,7 +55,7 @@ void Game::SetupScene()
 	sceneRoot->AddChild(std::make_shared<Spaceship>());
 
 	auto camera = std::make_shared<Camera>();
-	camera->position = { -100.0f, -100.0f };
+	camera->position = { 0.0f, 0.0f };
 	sceneRoot->AddChild(camera);
 
 	renderer->currentCamera = camera;

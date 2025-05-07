@@ -24,8 +24,6 @@ void Game::Run()
 		return;
 	}
 
-	SDL_SetWindowFullscreen(window, true);
-
 	renderer = new Renderer(window);
 
 	SetupScene();
@@ -80,6 +78,11 @@ void Game::PollEvents()
 			if (event.key.scancode == SDL_SCANCODE_F3)
 			{
 				debug = !debug;
+			}
+			else if (event.key.scancode == SDL_SCANCODE_F11)
+			{
+				bool isFullscreen = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
+				SDL_SetWindowFullscreen(window, !isFullscreen);
 			}
 			break;
 		}

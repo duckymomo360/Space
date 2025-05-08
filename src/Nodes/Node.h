@@ -9,6 +9,8 @@
 #include <typeindex>
 #include <typeinfo>
 
+class SceneRoot;
+
 class Node
 {
 	void DrawDebugInfo(Renderer* renderer);
@@ -21,6 +23,8 @@ public:
 
 	Vector2 globalPosition;
 	float   globalRotation{ 0.0f };
+
+	std::weak_ptr<Node> parent;
 
 	std::vector<std::shared_ptr<Node>> children;
 
@@ -67,4 +71,20 @@ public:
 	}
 
 	void DetachComponent(Component* componentToDetach);
+
+	virtual std::shared_ptr<SceneRoot> GetRoot();
+	
+	std::vector<std::shared_ptr<Node>> GetChildren() const
+	{
+		return children;
+	}
+
+	void GetDescendants(std::vector<std::shared_ptr<Node>>& descendants) const;
+
+	std::vector<std::shared_ptr<Node>>& GetDescendants() const
+	{
+		std::vector<std::shared_ptr<Node>> descendants;
+		GetDescendants(descendants);
+		return descendants;
+	}
 };

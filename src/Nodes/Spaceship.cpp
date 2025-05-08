@@ -4,6 +4,7 @@
 #include "Components/VectorRenderer.h"
 #include "Components/ParticleEmitter.h"
 #include "Components/SoundPlayer.h"
+#include "Nodes/SceneRoot.h"
 
 #include <SDL3/SDL_scancode.h>
 #include <SDL3/SDL_log.h>

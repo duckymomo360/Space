@@ -4,7 +4,7 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_render.h>
 
-#include "Nodes/Node.h"
+#include "Nodes/SceneRoot.h"
 #include "Nodes/Camera.h"
 #include "Nodes/Spaceship.h"
 #include "Components/Editor.h"
@@ -46,8 +46,7 @@ void Game::Run()
 
 void Game::SetupScene()
 {
-	sceneRoot = std::make_shared<Node>();
-	sceneRoot->name = "Root";
+	sceneRoot = std::make_shared<SceneRoot>();
 
 	sceneRoot->AddComponent<VectorRendererComponent>();
 	sceneRoot->AddComponent<EditorComponent>();

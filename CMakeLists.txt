@@ -20,7 +20,7 @@ find_package(sdl3 REQUIRED)
 find_package(sdl3_ttf REQUIRED)
 
 # Add source to this project's executable.
-add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/Node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp" "src/DataTypes.h" "src/DataTypes.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h"  "src/Components/Component.cpp" "src/Renderer.cpp" "src/Renderer.h" "src/Nodes/Camera.cpp" "src/Nodes/Camera.h")
+add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/Node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp" "src/DataTypes.h" "src/DataTypes.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h"  "src/Components/Component.cpp" "src/Renderer.cpp" "src/Renderer.h" "src/Nodes/Camera.cpp" "src/Nodes/Camera.h"   "src/Nodes/SceneRoot.cpp" "src/Nodes/SceneRoot.h" "src/Components/RigidBody.h")
 
 # Include base source
 target_include_directories(Space PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")

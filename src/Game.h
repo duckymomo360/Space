@@ -9,14 +9,14 @@
 
 struct SDL_Window;
 struct SDL_Renderer;
-class Node;
+class SceneRoot;
 
 class Game
 {
 public:
 	SDL_Window* window = nullptr;
 
-	std::shared_ptr<Node> sceneRoot;
+	std::shared_ptr<SceneRoot> sceneRoot;
 
 	Renderer* renderer;
 

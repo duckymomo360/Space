@@ -101,3 +101,22 @@ void Node::DetachComponent(Component* componentToDetach)
 		}
 	}
 }
+
+std::shared_ptr<SceneRoot> Node::GetRoot()
+{
+	if (parent.expired())
+	{
+		return nullptr;
+	}
+
+	return parent.lock()->GetRoot();
+}
+
+void Node::GetDescendants(std::vector<std::shared_ptr<Node>>& descendants) const
+{
+	for (const auto child : children)
+	{
+		descendants.push_back(child);
+		GetDescendants(descendants);
+	}
+}

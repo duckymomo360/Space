@@ -37,5 +37,5 @@ void SceneRoot::StepSimulation(float deltaTime)
 		}
 	}
 
-	b2World_Step(world, deltaTime, 4);
+	b2World_Step(worldId, deltaTime, 4);
 }

@@ -50,7 +50,7 @@ void EditorComponent::OnUpdate(float deltaTime)
 
 	rmbDown = mouseButtonState & SDL_BUTTON_RMASK;
 
-
+	/*
 	if (keyStates[SDL_SCANCODE_UP])
 		gGame.renderer->currentCamera->position.y -= 200.0f * deltaTime;
 
@@ -62,7 +62,7 @@ void EditorComponent::OnUpdate(float deltaTime)
 
 	if (keyStates[SDL_SCANCODE_RIGHT])
 		gGame.renderer->currentCamera->position.x += 200.0f * deltaTime;
-
+	*/
 
 	switch (editMode)
 	{

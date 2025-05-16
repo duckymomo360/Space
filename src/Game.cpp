@@ -90,6 +90,8 @@ void Game::PollEvents()
 
 void Game::UpdateScene()
 {
+	sceneRoot->StepSimulation(frameTime);
+
 	sceneRoot->UpdateTransformRecursive();
 
 	sceneRoot->Update(frameTime);

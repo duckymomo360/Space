@@ -13,6 +13,8 @@ class RigidBodyComponent : public Component
 	void CreateBodies(b2WorldId worldId);
 
 public:
+	void OnUpdate(float deltaTime) override;
+
 	void OnAttached() override;
 
 	void OnDetached() override;

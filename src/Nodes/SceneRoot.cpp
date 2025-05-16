@@ -1,7 +1,5 @@
 #include "SceneRoot.h"
 
-#include "Components/RigidBody.h"
-
 #include <cassert>
 
 uint8_t SceneRoot::numWorlds = 0;
@@ -29,13 +27,5 @@ SceneRoot::~SceneRoot()
 
 void SceneRoot::StepSimulation(float deltaTime)
 {
-	for (const auto& node : GetDescendants())
-	{
-		if (const auto& rigidBody = node->GetComponent<RigidBodyComponent>(); rigidBody)
-		{
-
-		}
-	}
-
 	b2World_Step(worldId, deltaTime, 4);
 }

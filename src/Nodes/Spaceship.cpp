@@ -4,6 +4,8 @@
 #include "Components/VectorRenderer.h"
 #include "Components/ParticleEmitter.h"
 #include "Components/SoundPlayer.h"
+#include "Components/RigidBody.h"
+
 #include "Nodes/SceneRoot.h"
 
 #include <SDL3/SDL_scancode.h>
@@ -37,6 +39,8 @@ Spaceship::Spaceship()
 
 	soundPlayer = AddComponent<SoundPlayerComponent>();
 	soundPlayer->wavPath = "data/SOUND/thruster_loop.wav";
+
+	AddComponent<RigidBodyComponent>();
 }
 
 void Spaceship::Update(float deltaTime)

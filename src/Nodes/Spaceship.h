@@ -8,6 +8,7 @@
 class VectorRendererComponent;
 class ParticleEmitterComponent;
 class SoundPlayerComponent;
+class RigidBodyComponent;
 
 class Spaceship : public Node
 {
@@ -15,6 +16,7 @@ class Spaceship : public Node
 	std::shared_ptr<VectorRendererComponent> vectorRenderer;
 	std::shared_ptr<ParticleEmitterComponent> particleEmitter;
 	std::shared_ptr<SoundPlayerComponent> soundPlayer;
+	std::shared_ptr<RigidBodyComponent> rigidBody;
 
 	Vector2 velocity;
 
@@ -26,6 +28,8 @@ class Spaceship : public Node
 
 public:
 	Spaceship();
+
+	void Init() override;
 
 	void Update(float deltaTime) override;
 };

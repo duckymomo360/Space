@@ -18,6 +18,10 @@ std::mt19937 gen(rd());
 Spaceship::Spaceship()
 {
 	name = "Spaceship";
+}
+
+void Spaceship::Init()
+{
 	position = { 300.f, 300.f };
 
 	vectorRenderer = AddComponent<VectorRendererComponent>();
@@ -28,10 +32,10 @@ Spaceship::Spaceship()
 		{ 1.0f,  1.0f},
 	};
 
-	particlePoint = std::make_shared<Node>();
+	particlePoint = Create<Node>();
 	particlePoint->name = "ParticlePoint";
 	particlePoint->position = { 0.0f, 15.0f };
-	
+
 	particleEmitter = particlePoint->AddComponent<ParticleEmitterComponent>();
 	particleEmitter->lifetime = 10.f;
 
@@ -40,12 +44,13 @@ Spaceship::Spaceship()
 	soundPlayer = AddComponent<SoundPlayerComponent>();
 	soundPlayer->wavPath = "data/SOUND/thruster_loop.wav";
 
-	AddComponent<RigidBodyComponent>();
+	rigidBody = AddComponent<RigidBodyComponent>();
 }
 
 void Spaceship::Update(float deltaTime)
 {
 	Node::Update(deltaTime);
+	rigidBody->SetAngularDamping(10.0f);
 
 	particleEmitter->emissionRate = 0;
 
@@ -61,18 +66,18 @@ void Spaceship::Update(float deltaTime)
 
 	if (keyStates[SDL_SCANCODE_A])
 	{
-		rotation -= deltaTime * 4.0f;
+		rigidBody->ApplyAngularImpulse(-500000.0f);
 	}
-
+	
 	if (keyStates[SDL_SCANCODE_D])
 	{
-		rotation += deltaTime * 4.0f;
+		rigidBody->ApplyAngularImpulse(500000.0f);
 	}
 
 	if (keyStates[SDL_SCANCODE_SPACE])
 	{
-		velocity += Vector2::FromAngle(rotation + M_PI) * deltaTime * 200.0f;
-
+		rigidBody->ApplyForceToCenter(Vector2::FromAngle(rigidBody->GetRotation() - M_PI) * 500000.0f);
+		
 		particleEmitter->emissionRate = 100;
 
 		if (!soundPlayer->playing)
@@ -90,7 +95,7 @@ void Spaceship::Update(float deltaTime)
 		Explode();
 	}
 
-	position += velocity * deltaTime;
+	//position += velocity * deltaTime;
 }
 
 void Spaceship::Explode()

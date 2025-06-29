@@ -11,11 +11,23 @@
 
 class SceneRoot;
 
-class Node
+class Node : public std::enable_shared_from_this<Node>
 {
 	void DrawDebugInfo(Renderer* renderer);
 
 public:
+	template<typename T>
+	static std::shared_ptr<T> Create()
+	{
+		static_assert(std::is_base_of<Node, T>::value, "T must be a subclass of Node");
+
+		auto node = std::make_shared<T>();
+
+		node->Init();
+
+		return node;
+	}
+
 	const char* name = "Node";
 
 	Vector2 position;
@@ -24,6 +36,8 @@ public:
 	Vector2 globalPosition;
 	float   globalRotation{ 0.0f };
 
+	bool bUpdateGlobalTransform = true;
+
 	std::weak_ptr<Node> parent;
 
 	std::vector<std::shared_ptr<Node>> children;
@@ -31,9 +45,15 @@ public:
 	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 
 public:
+	virtual void Init() {};
+
 	virtual void Draw(Renderer* renderer);
 
 	virtual void Update(float deltaTime);
+
+	void OnSceneEntered();
+
+	void OnSceneExited();
 
 	void UpdateTransformRecursive(Vector2 parentGlobalPosition = { 0.0f, 0.0f }, float parentGlobalRotation = 0.0f);
 

@@ -40,12 +40,31 @@ void Node::Update(float deltaTime)
 	}
 }
 
+void Node::OnSceneEntered()
+{
+	for (const auto& [id, component] : components)
+		component->Start();
+}
+
+void Node::OnSceneExited()
+{
+	for (const auto& [id, component] : components)
+		component->Stop();
+}
+
 void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGlobalRotation)
 {
-	globalRotation = (parentGlobalRotation + rotation);
-	globalPosition = (parentGlobalPosition + position).RotateAround(parentGlobalPosition, parentGlobalRotation);
+	auto rot = (parentGlobalRotation + rotation);
+	auto pos = (parentGlobalPosition + position).RotateAround(parentGlobalPosition, parentGlobalRotation);
 
-	for (const auto& child : children) {
+	if (bUpdateGlobalTransform)
+	{
+		globalRotation = rot;
+		globalPosition = pos;
+	}
+
+	for (const auto& child : children)
+	{
 		child->UpdateTransformRecursive(globalPosition, globalRotation);
 	}
 }
@@ -61,6 +80,8 @@ void Node::DrawDebugInfo(Renderer* renderer)
 void Node::AddChild(const std::shared_ptr<Node>& node)
 {
 	children.push_back(node);
+	node->parent = shared_from_this();
+	node->OnSceneEntered();
 }
 
 std::shared_ptr<Node> Node::FindFirstChild(const char* name, bool recursive)

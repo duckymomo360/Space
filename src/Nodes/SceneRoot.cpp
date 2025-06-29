@@ -11,7 +11,7 @@ SceneRoot::SceneRoot()
 	name = "SceneRoot";
 
 	b2WorldDef worldDef = b2DefaultWorldDef();
-	worldDef.gravity = { 0.0f, -10.0f };
+	worldDef.gravity = { 0.0f, -50.0f };
 
 	worldId = b2CreateWorld(&worldDef);
 

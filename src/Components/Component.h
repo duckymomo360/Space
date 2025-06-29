@@ -13,6 +13,10 @@ public:
 
 	Component(Node* node) : node(node) {}
 
+	virtual void OnStart() {}
+	
+	virtual void OnStop() {}
+
 	virtual void OnAttached() {}
 
 	virtual void OnDetached() {}
@@ -20,6 +24,9 @@ public:
 	virtual void OnUpdate(float dt) {}
 
 	virtual void OnDraw(Renderer* renderer) {}
+
+	void Start() { OnStart(); }
+	void Stop() { OnStop(); }
 
 	void Detach();
 };

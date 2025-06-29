@@ -187,7 +187,7 @@ void EditorComponent::DrawPointerLine(Renderer* renderer, Vector2 p1, Vector2 p2
 			{ 1.0f, -1.0f},
 		};
 
-		node.UpdateTransformRecursive(p1 + direction * (i * 40.f), rotation);
+		node.UpdateTransformRecursive(p1 + direction * i * 40.f, rotation);
 
 		node.Draw(renderer);
 	}

@@ -46,14 +46,14 @@ void Game::Run()
 
 void Game::SetupScene()
 {
-	sceneRoot = std::make_shared<SceneRoot>();
+	sceneRoot = Node::Create<SceneRoot>();
 
 	sceneRoot->AddComponent<VectorRendererComponent>();
 	sceneRoot->AddComponent<EditorComponent>();
 
-	sceneRoot->AddChild(std::make_shared<Spaceship>());
+	sceneRoot->AddChild(Node::Create<Spaceship>());
 
-	auto camera = std::make_shared<Camera>();
+	auto camera = Node::Create<Camera>();
 	camera->position = { 0.0f, 0.0f };
 	sceneRoot->AddChild(camera);
 

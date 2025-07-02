@@ -76,11 +76,15 @@ bool SoundPlayerComponent::PreloadWAV()
 	return loaded;
 }
 
-void SoundPlayerComponent::OnAttached()
+void SoundPlayerComponent::OnStart()
 {
 }
 
-void SoundPlayerComponent::OnDetached()
+void SoundPlayerComponent::OnStop()
 {
-	SDL_DestroyAudioStream(stream);
+	if (stream)
+	{
+		SDL_DestroyAudioStream(stream);
+		stream = nullptr;
+	}
 }

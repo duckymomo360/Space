@@ -5,28 +5,23 @@ class Renderer;
 
 class Component
 {
+public:
+	Component(Node* node) : node(node)
+	{
+	}
+
+	bool bEnabled{ true };
+
+	void Start();
+	void Stop();
+	void Update(float deltaTime);
+	void Draw(Renderer* renderer);
+
 protected:
 	Node* node;
 
-public:
-	bool enabled = true;
-
-	Component(Node* node) : node(node) {}
-
-	virtual void OnStart() {}
-	
-	virtual void OnStop() {}
-
-	virtual void OnAttached() {}
-
-	virtual void OnDetached() {}
-
-	virtual void OnUpdate(float dt) {}
-
-	virtual void OnDraw(Renderer* renderer) {}
-
-	void Start() { OnStart(); }
-	void Stop() { OnStop(); }
-
-	void Detach();
+	virtual void OnStart();
+	virtual void OnStop();
+	virtual void OnUpdate(float deltaTime);
+	virtual void OnDraw(Renderer* renderer);
 };

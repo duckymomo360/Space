@@ -14,15 +14,6 @@
 
 #include <format>
 
-
-void EditorComponent::OnAttached()
-{
-}
-
-void EditorComponent::OnDetached()
-{
-}
-
 void EditorComponent::OnUpdate(float deltaTime)
 {
 	static const bool* keyStates = SDL_GetKeyboardState(NULL);

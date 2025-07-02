@@ -3,25 +3,11 @@
 #include "Game.h"
 #include "Renderer.h"
 
-void Node::Draw(Renderer* renderer)
+using Ptr = Node::Ptr;
+
+// === Lifecycle ===
+void Node::Init()
 {
-	for (const auto& child : children)
-	{
-		child->Draw(renderer);
-	}
-
-	for (const auto& [id, component] : components)
-	{
-		if (component->enabled)
-		{
-			component->OnDraw(renderer);
-		}
-	}
-
-	if (gGame.debug)
-	{
-		DrawDebugInfo(renderer);
-	}
 }
 
 void Node::Update(float deltaTime)
@@ -33,25 +19,29 @@ void Node::Update(float deltaTime)
 
 	for (const auto& [id, component] : components)
 	{
-		if (component->enabled)
-		{
-			component->OnUpdate(deltaTime);
-		}
+		component->Update(deltaTime);
 	}
 }
 
-void Node::OnSceneEntered()
+void Node::Draw(Renderer* renderer)
 {
+	for (const auto& child : children)
+	{
+		child->Draw(renderer);
+	}
+
 	for (const auto& [id, component] : components)
-		component->Start();
+	{
+		component->Draw(renderer);
+	}
+
+	if (gGame.debug)
+	{
+		DrawDebugInfo(renderer);
+	}
 }
 
-void Node::OnSceneExited()
-{
-	for (const auto& [id, component] : components)
-		component->Stop();
-}
-
+// === Transform ===
 void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGlobalRotation)
 {
 	auto rot = (parentGlobalRotation + rotation);
@@ -69,22 +59,39 @@ void Node::UpdateTransformRecursive(Vector2 parentGlobalPosition, float parentGl
 	}
 }
 
-void Node::DrawDebugInfo(Renderer* renderer)
+// === Hierarchy ===
+void Node::AddChild(Ptr child)
 {
-	renderer->RenderPoint(globalPosition, Color4::Red);
-
-	static auto debugFont = renderer->GetCachedFont(FONT_DEBUG, 16.0f);
-	renderer->RenderText(name, globalPosition + Vector2(2.0f, 2.0f), Vector2::Zero, Color4::Red, debugFont, 1.0f);
+	child->parent = shared_from_this();
+	children.push_back(child);
 }
 
-void Node::AddChild(const std::shared_ptr<Node>& node)
+void Node::SetParent(Ptr newParent)
 {
-	children.push_back(node);
-	node->parent = shared_from_this();
-	node->OnSceneEntered();
+	newParent->AddChild(shared_from_this());
+
+	if (IsInScene())
+	{
+		for (const auto& [id, component] : components)
+		{
+			component->Start();
+		}
+	}
+	else
+	{
+		for (const auto& [id, component] : components)
+		{
+			component->Stop();
+		}
+	}
 }
 
-std::shared_ptr<Node> Node::FindFirstChild(const char* name, bool recursive)
+std::vector<Ptr> Node::GetChildren() const
+{
+	return children;
+}
+
+Ptr Node::FindFirstChild(const char* name, bool recursive) const
 {
 	for (const auto child : children)
 	{
@@ -105,6 +112,33 @@ std::shared_ptr<Node> Node::FindFirstChild(const char* name, bool recursive)
 	return nullptr;
 }
 
+void Node::GetDescendants(std::vector<Ptr>& descendants) const
+{
+	for (const auto child : children)
+	{
+		descendants.push_back(child);
+		child->GetDescendants(descendants);
+	}
+}
+
+std::vector<Ptr> Node::GetDescendants() const
+{
+	std::vector<Ptr> descendants;
+	GetDescendants(descendants);
+	return descendants;
+}
+
+std::shared_ptr<SceneRoot> Node::GetRoot() const
+{
+	if (parent.expired())
+	{
+		return nullptr;
+	}
+
+	return parent.lock()->GetRoot();
+}
+
+// === Components ===
 void Node::DetachComponent(Component* componentToDetach)
 {
 	if (!componentToDetach)
@@ -116,28 +150,18 @@ void Node::DetachComponent(Component* componentToDetach)
 	{
 		if (it->second.get() == componentToDetach)
 		{
-			it->second->OnDetached();
+			it->second->Stop();
 			components.erase(it);
 			return;
 		}
 	}
 }
 
-std::shared_ptr<SceneRoot> Node::GetRoot()
+// === Misc ===
+void Node::DrawDebugInfo(Renderer* renderer)
 {
-	if (parent.expired())
-	{
-		return nullptr;
-	}
+	renderer->RenderPoint(globalPosition, Color4::Red);
 
-	return parent.lock()->GetRoot();
-}
-
-void Node::GetDescendants(std::vector<std::shared_ptr<Node>>& descendants) const
-{
-	for (const auto child : children)
-	{
-		descendants.push_back(child);
-		GetDescendants(descendants);
-	}
+	static auto debugFont = renderer->GetCachedFont(FONT_DEBUG, 16.0f);
+	renderer->RenderText(name, globalPosition + Vector2(2.0f, 2.0f), Vector2::Zero, Color4::Red, debugFont, 1.0f);
 }

@@ -39,7 +39,7 @@ void Spaceship::Init()
 	particleEmitter = particlePoint->AddComponent<ParticleEmitterComponent>();
 	particleEmitter->lifetime = 10.f;
 
-	AddChild(particlePoint);
+	particlePoint->SetParent(shared_from_this());
 
 	soundPlayer = AddComponent<SoundPlayerComponent>();
 	soundPlayer->wavPath = "data/SOUND/thruster_loop.wav";
@@ -118,5 +118,5 @@ void Spaceship::Die()
 
 	soundPlayer->Stop();
 
-	vectorRenderer->enabled = false;
+	vectorRenderer->bEnabled = false;
 }

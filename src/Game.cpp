@@ -51,11 +51,12 @@ void Game::SetupScene()
 	sceneRoot->AddComponent<VectorRendererComponent>();
 	sceneRoot->AddComponent<EditorComponent>();
 
-	sceneRoot->AddChild(Node::Create<Spaceship>());
+	auto spaceship = Node::Create<Spaceship>();
+	spaceship->SetParent(sceneRoot);
 
 	auto camera = Node::Create<Camera>();
 	camera->position = { 0.0f, 0.0f };
-	sceneRoot->AddChild(camera);
+	camera->SetParent(sceneRoot);
 
 	renderer->currentCamera = camera;
 }

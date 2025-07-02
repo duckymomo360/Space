@@ -9,68 +9,74 @@
 #include <typeindex>
 #include <typeinfo>
 
+class Renderer;
 class SceneRoot;
 
 class Node : public std::enable_shared_from_this<Node>
 {
-	void DrawDebugInfo(Renderer* renderer);
-
 public:
-	template<typename T>
+	using Ptr = std::shared_ptr<Node>;
+
+	// === Factory ===
+	template<std::derived_from<Node> T>
 	static std::shared_ptr<T> Create()
 	{
-		static_assert(std::is_base_of<Node, T>::value, "T must be a subclass of Node");
-
 		auto node = std::make_shared<T>();
-
 		node->Init();
-
 		return node;
 	}
 
-	const char* name = "Node";
-
-	Vector2 position;
-	float   rotation{ 0.0f };
-
-	Vector2 globalPosition;
-	float   globalRotation{ 0.0f };
-
-	bool bUpdateGlobalTransform = true;
-
-	std::weak_ptr<Node> parent;
-
-	std::vector<std::shared_ptr<Node>> children;
-
-	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
-
-public:
-	virtual void Init() {};
-
+	// === Lifecycle ===
+	virtual void Init();
+	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer* renderer);
 
-	virtual void Update(float deltaTime);
+	// === Transform ===
+	Vector2 position{ 0.0f, 0.0f };
+	float   rotation{ 0.0f };
 
-	void OnSceneEntered();
+	Vector2 globalPosition{ 0.0f, 0.0f };
+	float   globalRotation{ 0.0f };
 
-	void OnSceneExited();
+	bool bUpdateGlobalTransform{ true };
 
 	void UpdateTransformRecursive(Vector2 parentGlobalPosition = { 0.0f, 0.0f }, float parentGlobalRotation = 0.0f);
 
-	void AddChild(const std::shared_ptr<Node>& node);
+	// === Hierarchy ===
+private:
+	std::weak_ptr<Node> parent;
+	std::vector<Ptr> children;
 
-	std::shared_ptr<Node> FindFirstChild(const char* name, bool recursive = false);
+	void AddChild(Ptr child);
 
-	template<std::derived_from<Component> T> std::shared_ptr<T> AddComponent()
+public:
+	void             SetParent(Ptr newParent);
+	std::vector<Ptr> GetChildren() const;
+	Ptr              FindFirstChild(const char* name, bool recursive = false) const;
+	void             GetDescendants(std::vector<Ptr>& descendants) const;
+	std::vector<Ptr> GetDescendants() const;
+	bool             IsInScene() const { return GetRoot() != nullptr; }
+	virtual std::shared_ptr<SceneRoot> GetRoot() const;
+
+	// === Components ===
+	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
+
+	template<std::derived_from<Component> T>
+	std::shared_ptr<T> AddComponent()
 	{
 		auto component = std::make_shared<T>(this);
 		components[typeid(T)] = component;
-		component->OnAttached();
+
+		if (IsInScene())
+		{
+			component->Start();
+		}
 
 		return static_pointer_cast<T>(component);
 	}
 
-	template<std::derived_from<Component> T> std::shared_ptr<T> GetComponent()
+	template<std::derived_from<Component> T>
+	std::shared_ptr<T> GetComponent()
 	{
 		if (components.contains(typeid(T)))
 		{
@@ -80,7 +86,8 @@ public:
 		return nullptr;
 	}
 
-	template<std::derived_from<Component> T> std::shared_ptr<T> GetOrAddComponent()
+	template<std::derived_from<Component> T>
+	std::shared_ptr<T> GetOrAddComponent()
 	{
 		if (components.contains(typeid(T)))
 		{
@@ -92,19 +99,9 @@ public:
 
 	void DetachComponent(Component* componentToDetach);
 
-	virtual std::shared_ptr<SceneRoot> GetRoot();
-	
-	std::vector<std::shared_ptr<Node>> GetChildren() const
-	{
-		return children;
-	}
+	// === Misc ===
+	const char* name{ "Node" };
 
-	void GetDescendants(std::vector<std::shared_ptr<Node>>& descendants) const;
-
-	std::vector<std::shared_ptr<Node>>& GetDescendants() const
-	{
-		std::vector<std::shared_ptr<Node>> descendants;
-		GetDescendants(descendants);
-		return descendants;
-	}
+private:
+	void DrawDebugInfo(Renderer* renderer);
 };

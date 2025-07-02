@@ -36,11 +36,6 @@ private:
 	static void DrawPointerLine(Renderer* renderer, Vector2 p1, Vector2 p2);
 
 public:
-	void OnAttached() override;
-
-	void OnDetached() override;
-
 	void OnUpdate(float deltaTime) override;
-
 	void OnDraw(Renderer* renderer) override;
 };

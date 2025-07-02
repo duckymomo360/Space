@@ -4,7 +4,7 @@
 #include "Nodes/SceneRoot.h"
 #include "Components/VectorRenderer.h"
 
-void RigidBodyComponent::CreateBodies(b2WorldId worldId)
+void RigidBodyComponent::CreateBody(b2WorldId worldId)
 {
 	b2BodyDef bodyDef = b2DefaultBodyDef();
 	bodyDef.type = b2_dynamicBody;
@@ -20,73 +20,25 @@ void RigidBodyComponent::CreateBodies(b2WorldId worldId)
 	}
 }
 
-Vector2 RigidBodyComponent::GetPosition() const
+void RigidBodyComponent::OnStart()
 {
-	auto vec = b2Body_GetPosition(bodyId);
-	return { vec.x, -vec.y };
+	node->bUpdateGlobalTransform = false;
+
+	if (auto root = node->GetRoot(); root)
+	{
+		CreateBody(root->GetWorldId());
+	}
 }
 
-float RigidBodyComponent::GetRotation() const
+void RigidBodyComponent::OnStop()
 {
-	auto rot = b2Body_GetRotation(bodyId);
-	return atan2f(rot.s, rot.c);
-}
+	node->bUpdateGlobalTransform = true;
 
-void RigidBodyComponent::SetLinearVelocity(const Vector2& force)
-{
-	b2Body_SetLinearVelocity(bodyId, { force.x, -force.y });
-}
-
-void RigidBodyComponent::SetLinearDamping(float linearDamping)
-{
-	b2Body_SetLinearDamping(bodyId, linearDamping);
-}
-
-void RigidBodyComponent::SetAngularVelocity(float angularVelocity)
-{
-	b2Body_SetAngularVelocity(bodyId, angularVelocity);
-}
-
-void RigidBodyComponent::SetAngularDamping(float angularDamping)
-{
-	b2Body_SetAngularDamping(bodyId, angularDamping);
-}
-
-void RigidBodyComponent::ApplyForceToCenter(const Vector2& force)
-{
-	b2Body_ApplyForceToCenter(bodyId, { force.x, -force.y }, true);
-}
-
-void RigidBodyComponent::ApplyAngularImpulse(float impulse)
-{
-	b2Body_ApplyAngularImpulse(bodyId, impulse, true);
+	DestroyBody();
 }
 
 void RigidBodyComponent::OnUpdate(float deltaTime)
 {
 	node->globalPosition = GetPosition();
 	node->globalRotation = GetRotation();
-}
-
-void RigidBodyComponent::OnStart()
-{
-	if (auto root = node->GetRoot(); root)
-	{
-		CreateBodies(root->GetWorldId());
-	}
-}
-
-void RigidBodyComponent::OnStop()
-{
-	b2DestroyBody(bodyId);
-}
-
-void RigidBodyComponent::OnAttached()
-{
-	node->bUpdateGlobalTransform = false;
-}
-
-void RigidBodyComponent::OnDetached()
-{
-	node->bUpdateGlobalTransform = true;
 }

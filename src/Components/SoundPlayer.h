@@ -9,10 +9,10 @@ class SoundPlayerComponent : public Component
 {
 	using Component::Component;
 
-	SDL_AudioStream* stream;
+	SDL_AudioStream* stream{ nullptr };
 	SDL_AudioSpec audioSpec;
-	uint8_t* audioBuffer;
-	uint32_t audioLength;
+	uint8_t* audioBuffer{ nullptr };
+	uint32_t audioLength{ 0 };
 
 public:
 	const char* wavPath = nullptr;
@@ -27,7 +27,7 @@ public:
 
 	bool PreloadWAV();
 
-	void OnAttached() override;
+	void OnStart() override;
 
-	void OnDetached() override;
+	void OnStop() override;
 };

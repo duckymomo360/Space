@@ -1,7 +1,11 @@
 {
   "dependencies": [
+    "box2d",
     "sdl3",
     "sdl3-ttf",
-    "box2d"
+    {
+      "name": "imgui",
+      "features": [ "sdl3-binding", "sdlgpu3-binding" ]
+    }
   ]
 }

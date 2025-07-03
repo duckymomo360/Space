@@ -1,6 +1,6 @@
 #include "ParticleEmitter.h"
 
-#include "Renderer.h"
+#include "Renderer/Renderer.h"
 #include "Nodes/Node.h"
 
 #include <random>

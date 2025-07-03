@@ -10,6 +10,8 @@
 #include "Components/Editor.h"
 #include "Components/VectorRenderer.h"
 
+#include <imgui_impl_sdl3.h>
+
 #include <format>
 
 void Game::Run()
@@ -20,7 +22,7 @@ void Game::Run()
 
 	if (!window)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error: SDL_CreateWindow(): %s\n", SDL_GetError());
 		return;
 	}
 
@@ -57,8 +59,6 @@ void Game::SetupScene()
 	auto camera = Node::Create<Camera>();
 	camera->position = { 0.0f, 0.0f };
 	camera->SetParent(sceneRoot);
-
-	renderer->currentCamera = camera;
 }
 
 void Game::PollEvents()

@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "DataTypes.h"
-#include "Renderer.h"
+#include "Renderer/Renderer.h"
 #include "Nodes/Node.h"
 #include "Nodes/Camera.h"
 #include "Components/VectorRenderer.h"

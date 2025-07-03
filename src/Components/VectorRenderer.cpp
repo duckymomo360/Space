@@ -1,6 +1,6 @@
 #include "VectorRenderer.h"
 
-#include "Renderer.h"
+#include "Renderer/Renderer.h"
 #include "Nodes/Node.h"
 
 #include <optional>

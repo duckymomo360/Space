@@ -22,14 +22,19 @@ find_package(box2d REQUIRED)
 find_package(imgui REQUIRED)
 find_package(OpenGL REQUIRED)
 
+set(SDLSHADERCROSS_VENDORED ON)
+set(SDLSHADERCROSS_SPIRVCROSS_SHARED ON)
+add_subdirectory(external/SDL_shadercross)
+
 # Add source to this project's executable.
-add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/Node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp" "src/DataTypes.h" "src/DataTypes.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h"  "src/Components/Component.cpp" "src/Renderer/Renderer.cpp" "src/Renderer/Renderer.h" "src/Nodes/Camera.cpp" "src/Nodes/Camera.h"   "src/Nodes/SceneRoot.cpp" "src/Nodes/SceneRoot.h" "src/Components/RigidBody.cpp" "src/Components/RigidBody.h" "src/Interfaces/IBox2DBody.cpp" "src/Interfaces/IBox2DBody.h" "src/Editor/Editor.cpp" "src/Editor/Editor.h" "src/Renderer/Shader.h" "src/Renderer/Shader.cpp")
+add_executable(Space WIN32 "src/Main.cpp" "src/Game.cpp" "src/Game.h" "src/Nodes/Node.h" "src/Nodes/Node.cpp" "src/Nodes/Spaceship.h" "src/Nodes/Spaceship.cpp" "src/Components/VectorRenderer.h" "src/Components/VectorRenderer.cpp" "src/DataTypes.h" "src/DataTypes.cpp" "src/Components/ParticleEmitter.h" "src/Components/ParticleEmitter.cpp" "src/Profiler.cpp" "src/Profiler.h" "src/Components/Editor.h" "src/Components/Editor.cpp" "src/Registry.h" "src/Registry.cpp" "src/Components/SoundPlayer.cpp" "src/Components/SoundPlayer.h" "src/Components/Component.cpp" "src/Renderer/Renderer.cpp" "src/Renderer/Renderer.h" "src/Nodes/Camera.cpp" "src/Nodes/Camera.h" "src/Nodes/SceneRoot.cpp" "src/Nodes/SceneRoot.h" "src/Components/RigidBody.cpp" "src/Components/RigidBody.h" "src/Interfaces/IBox2DBody.cpp" "src/Interfaces/IBox2DBody.h" "src/Renderer/Shader.h" "src/Renderer/Shader.cpp")
 
 # Include base source
 target_include_directories(Space PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 target_link_libraries(Space PRIVATE SDL3::SDL3)
 target_link_libraries(Space PRIVATE SDL3_ttf::SDL3_ttf)
+target_link_libraries(Space PRIVATE SDL3_shadercross::SDL3_shadercross)
 target_link_libraries(Space PRIVATE box2d::box2d)
 target_link_libraries(Space PRIVATE imgui::imgui)
 target_link_libraries(Space PRIVATE ${OPENGL_LIBRARIES})

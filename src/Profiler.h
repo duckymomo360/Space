@@ -6,21 +6,30 @@
 #include <concepts>
 #include <optional>
 
-class Timer {
-	uint64_t last = 0;
+class Timer
+{
+private:
+	uint64_t last = GetPerformanceCounter();
 
 public:
-	Timer() : last(GetPerformanceCounter()) {}
-
-	double Elapsed();
-	void   Reset();
-
-	inline uint64_t GetPerformanceCounter() {
+	inline uint64_t GetPerformanceCounter()
+	{
 		return SDL_GetPerformanceCounter();
 	}
 
-	inline uint64_t GetPerformanceFrequency() {
+	inline uint64_t GetPerformanceFrequency()
+	{
 		return SDL_GetPerformanceFrequency();
+	}
+
+	inline double Elapsed()
+	{
+		return static_cast<double>(GetPerformanceCounter() - last) / static_cast<double>(GetPerformanceFrequency());
+	}
+
+	inline void Reset()
+	{
+		last = GetPerformanceCounter();
 	}
 };
 
@@ -28,24 +37,30 @@ template<typename T>
 concept arithmetic = std::integral<T> or std::floating_point<T>;
 
 template<arithmetic T, size_t size>
-class Sampler {
+class Sampler
+{
 	T samples[size];
 	size_t index;
 
 public:
-	void Push(T n) {
+	void Push(T n)
+	{
 		samples[index] = n;
 
-		if (++index >= size) {
+		if (++index >= size)
+		{
 			index = 0;
 		}
 	}
 
-	std::optional<T> Max() const {
+	std::optional<T> Max() const
+	{
 		std::optional<T> max;
 
-		for (size_t i = 0; i < size; i++) {
-			if (!max.has_value() || samples[i] > max.value()) {
+		for (size_t i = 0; i < size; i++)
+		{
+			if (!max.has_value() || samples[i] > max.value())
+			{
 				max = samples[i];
 			}
 		}
@@ -53,11 +68,14 @@ public:
 		return max;
 	}
 
-	std::optional<T> Min() const {
+	std::optional<T> Min() const
+	{
 		std::optional<T> min;
 
-		for (size_t i = 0; i < size; i++) {
-			if (!min.has_value() || samples[i] < min.value()) {
+		for (size_t i = 0; i < size; i++)
+		{
+			if (!min.has_value() || samples[i] < min.value())
+			{
 				min = samples[i];
 			}
 		}
@@ -65,13 +83,15 @@ public:
 		return min;
 	}
 
-	T Average() const {
+	T Average() const
+	{
 		T total = 0;
 
-		for (size_t i = 0; i < size; i++) {
+		for (size_t i = 0; i < size; i++)
+		{
 			total += samples[i];
 		}
 
-		return total / (T)size;
+		return total / static_cast<T>(size);
 	}
 };
